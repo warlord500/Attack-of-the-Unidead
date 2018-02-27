@@ -25,5 +25,4 @@ struct Level {
 	Unit* units;
 	int unit_count;
 	unsigned int timer;
-	std::vector<Event> events;
 };
