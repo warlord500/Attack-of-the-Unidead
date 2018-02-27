@@ -9,9 +9,16 @@ and absurd take on its theme.
 ## TODO
 
 - [x] Load configuration from init.txt file
+- [x] Load unit (enemy) data from file
 - [ ] Create room editor to design rooms to be inserted into dungeon generator
 - [ ] Create dungeon generator
 - [ ] Draw sprite art for Unicycle dude
+- [ ] Design enemies
+- [ ] Draw art for enemies
+- [ ] Create enemies
+- [ ] Implement enemy AI
+- [ ] Create UI for menus
+- [ ] Create interface for things like health
 
 ## Linking the engine into Visual Studio
 
@@ -29,12 +36,13 @@ Edit the additional dependencies and type the following into it:
 ```
 bahamut.lib
 ```
-
+Next, go to:
 ```
 Properties > System > SubSystem
 ```
 Change your SubSystem to Console.
-Now, change your configuration to debug.
+
+Then change your configuration to debug.
 
 ```
 Properties > VC++ Directories > Library Directories
