@@ -10,6 +10,7 @@ and absurd take on its theme.
 
 - [x] Load configuration from init.txt file
 - [x] Load unit (enemy) data from file
+- [ ] Figure out someone to do music because no one can agree
 - [ ] Create room editor to design rooms to be inserted into dungeon generator
 - [ ] Create dungeon generator
 - [ ] Draw sprite art for Unicycle dude
