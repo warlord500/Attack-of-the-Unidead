@@ -261,4 +261,4 @@ void main() {
 
 ## Contact
 
-Email: Starkcorbin@gmail.com
+Email: starkcorbin@gmail.com
