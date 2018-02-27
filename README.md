@@ -1,7 +1,7 @@
 # Attack of the Unidead
 
 On one particularly ordinary day, something fascinating happened. There was a flash of light, followed by an intense storm.
-Upon the storm subsiding, the dead began to rise from their graves. Only the chosen one, the *unicycler* can save us now.
+Upon the storm subsiding, the dead began to rise from their graves. Only the chosen one, the *unicycler*, can save us now.
 
 This is a group project by the students of Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense
 and absurd take on its theme.
@@ -80,6 +80,88 @@ void unbindTexture(unsigned int slot);
 ```
 
 ### Drawing
+
+```cpp
+void begin2D();
+void drawTexture(Texture& tex, int xPos, int yPos);
+void drawTexture(Texture& tex, int xPos, int yPos, float r, float g, float b, float a);
+void drawTextureRot(Texture& tex, int xPos, int yPos, float rotateDegree);
+void drawTextureRot(Texture& tex, int xPos, int yPos, vec2f origin, float rotation);
+void drawTextureEX(Texture& tex, Rectangle source, Rectangle dest);
+void drawTextureEX(Texture& tex, Rectangle source, Rectangle dest, vec2f origin);
+void drawRectangle(int x, int y, int width, int height, float r, float g, float b, float a);
+void drawRectangle(int x, int y, int width, int height, vec4f& color);
+void drawText(Font& font, std::string str, int x, int y);
+void drawText(Font& font, std::string str, int xPos, int yPos, float r, float g, float b);
+void end2D();
+
+void set2DRenderViewport(int x, int y, int width, int height);
+GLuint rgbaToUint(int r, int g, int b, int a);
+```
+
+### Font
+
+```cpp
+Texture createTextureFromString(Font& font, const std::string str, GLubyte r = 0, GLubyte g = 0, GLubyte b = 0);
+Font loadFont(const GLchar* filepath, unsigned int size);
+void disposeFont(Font& font);
+
+const char* formatText(const char* text, ...);
+```
+
+### Entity-Component-System
+
+```cpp
+template<class T, class... TArgs>
+T* addComp(TArgs&&... mArgs);
+    
+template<class T>
+T* getComp();
+    
+template<class T>
+void removeComp();
+```
+
+### Maths
+
+#### Matrix 4x4
+
+```cpp
+mat4f(float diagonal);
+static mat4f identity();
+static mat4f orthographic(float x, float y, float width, float height, float near, float far);
+static mat4f perspective(float fov, float aspectRatio, float near, float far);
+static mat4f createTransformationMatrix(const vec3f& translation, const vec3f& rotation, const vec3f& scale);
+static mat4f createTransformationMatrix(const float x, const float y, const float z, 
+	const float rotX, const float rotY, const float rotZ, 
+	const float scaleX, const float scaleY, const float scaleZ
+);
+static mat4f createViewMatrix(Camera& cam);
+
+static mat4f translation(const vec3f& translation);
+static mat4f translation(const float x, const float y, const float z);
+static mat4f rotation(float angle, const vec3f& axis);
+static mat4f rotation(float angle, const float axisX, const float axisY, const float axisZ);
+static mat4f rotationX(float angle);
+static mat4f rotationY(float angle);
+static mat4f rotationZ(float angle);
+static mat4f scaleMatrix(const vec3f& scale);
+static mat4f scaleMatrix(const float scaleX, const float scaleY, const float scaleZ);
+
+void translate(const vec3f& translation);
+void translate(const float x, const float y, const float z);
+
+void rotate(const float angle, const vec3f& axis);
+void rotate(const float angle, const float axisX, const float axisY, const float axisZ);
+
+void scale(const vec3f& scale);
+void scale(const float scaleX, const float scaleY, const float scaleZ);
+
+mat4f& multiply(const mat4f& other);
+friend mat4f operator*(mat4f left, const mat4f& right);
+mat4f& operator*=(const mat4f& other);
+friend std::ostream& operator<<(std::ostream& stream, const mat4f& mat);
+```
 
 ### Sample program
 
