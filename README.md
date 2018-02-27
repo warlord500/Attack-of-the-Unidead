@@ -231,7 +231,7 @@ bool colliding(Rectangle& rect, vec2f& point);
 ```cpp
 Rectangle first(60, 60, 5, 5);
 Rectangle second(50, 50, 10, 10);
-if(colliding(first, second) {
+if(colliding(first, second)) {
 	std::cout << "Collision!" << std::endl;
 }
 ```
