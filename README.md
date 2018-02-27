@@ -23,7 +23,7 @@ and absurd take on its theme.
 
 ## Linking the engine into Visual Studio
 
-> If you aren't using Visual Studio 2017, this may not work. Upgrading to Visual Studio 2017 is highly recommended. Any 'p1' and 'p2' mismatch is likely due to having a wrong Visual Studio version.
+> If you aren't using Visual Studio 2017, this may not work. Upgrading to Visual Studio 2017 is highly recommended. Any 'p1' and 'p2' mismatch is likely due to having a wrong Visual Studio version. I could also recompile the engine on a different VS version if that is preferable.
 
 After creating your project, right click it and select properties.
 Make sure your configuration is in "All Configurations" before continuing
