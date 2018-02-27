@@ -1,7 +1,7 @@
 #pragma once
 #include <GL/glew.h>
 #include <string>
-#include "ENGINE\mat4f.h"
+#include <mat4f.h>
 
 struct Mesh {
 	GLuint vao;
