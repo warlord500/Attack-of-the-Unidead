@@ -66,9 +66,9 @@ so all functions related to input and drawing are global and can be called from 
 To initialize the window
 
 ```cpp
-initWindow(width, height, title, fullscreen, vsync, primary_monitor);
+initWindow(width, height, title, fullscreen, resizable, primary_monitor);
 
-initWindow(800, 600, "Attack of the Unidead", true, true, 0);
+initWindow(800, 600, "Attack of the Unidead", false, true, 0);
 ```
 
 After initialization, the features of the engine become available. The available functions are listed here.
