@@ -13,7 +13,7 @@ and absurd take on its theme.
 - [ ] Create dungeon generator
 - [ ] Draw sprite art for Unicycle dude
 
-## Linking the project into Visual Studio
+## Linking the engine into Visual Studio
 
 After creating your project, right click it and select properties.
 Make sure your configuration is in "All Configurations" before continuing
