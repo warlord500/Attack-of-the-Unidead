@@ -1,7 +1,7 @@
 #pragma once
-#include "ENGINE/texture.h"
-#include "ENGINE/vec4f.h"
-#include "ENGINE/bahamut.h"
+#include <texture.h>
+#include <vec4f.h>
+#include <bahamut.h>
 #include <vector>
 //just for clarity. It should be immediately obvious these are globals and you should be VERY careful with them
 //and by that I mean never change them. They are only changeable because they must be loaded from disk at runtime.
