@@ -6,6 +6,13 @@ Upon the storm subsiding, the dead began to rise from their graves. Only the cho
 This is a group project by the students of Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense
 and absurd take on its theme.
 
+## TODO
+
+- [x] Load configuration from init.txt file
+- [ ] Create room editor to design rooms to be inserted into dungeon generator
+- [ ] Create dungeon generator
+- [ ] Draw sprite art for Unicycle dude
+
 ## Linking the project into Visual Studio
 
 After creating your project, right click it and select properties.
