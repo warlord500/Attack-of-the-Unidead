@@ -163,6 +163,27 @@ mat4f& operator*=(const mat4f& other);
 friend std::ostream& operator<<(std::ostream& stream, const mat4f& mat);
 ```
 
+### Collision Detection
+
+```cpp
+Rectangle();
+Rectangle(float x, float y, float width, float height);
+
+bool colliding(Rectangle& first, Rectangle& second);
+bool colliding(Rectangle& rect, float x, float y, float width, float height);
+bool colliding(Rectangle& rect, vec2f& point);
+```
+
+##### Example
+
+```cpp
+Rectangle first(60, 60, 5, 5);
+Rectangle second(50, 50, 10, 10);
+if(colliding(first, second) {
+	std::cout << "Collision!" << std::endl;
+}
+```
+
 ### Sample program
 
 ```cpp
