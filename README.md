@@ -74,7 +74,7 @@ initWindow(width, height, title, fullscreen, resizable, primary_monitor);
 initWindow(800, 600, "Attack of the Unidead", false, true, 0);
 ```
 
-After initialization, the features of the engine become available. The available functions are listed here.
+After initialization, the features of the engine become available. The available functions are listed here,
 
 ### General
 
@@ -135,6 +135,23 @@ void unbindTexture(unsigned int slot);
 ```
 
 ### Drawing
+
+All drawing must be done in between begin2D() and end2D().
+begin2D() and end2D() must be in between beginDrawing() and endDrawing()
+
+#### Example
+
+```cpp
+while(true) {
+	beginDrawing();
+	begin2D();
+	
+	drawRectangle(50, 50, 100, 100);
+	
+	end2D();
+	endDrawing();
+}
+```
 
 ```cpp
 void begin2D();
