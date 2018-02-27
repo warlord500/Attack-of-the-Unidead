@@ -1,6 +1,6 @@
 #pragma once
-#include "ENGINE/bahamut.h"
-#include "ENGINE/font.h"
+#include <bahamut.h>
+#include <font.h>
 
 class Panel;
 
