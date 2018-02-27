@@ -6,6 +6,43 @@ Upon the storm subsiding, the dead began to rise from their graves. Only the cho
 This is a group project by the students of Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense
 and absurd take on its theme.
 
+## Linking the project into Visual Studio
+
+After creating your project, right click it and select properties.
+Make sure your configuration is in "All Configurations" before continuing
+```
+Properties > VC++ Directories > Include Directories
+```
+Edit the include directories, and add the BahamutInclude directory to it.
+
+```
+Properties > Linker > Input > Additional Dependencies
+```
+Edit the additional dependencies and type the following into it:
+```
+bahamut.lib
+```
+
+```
+Properties > System > SubSystem
+```
+Change your SubSystem to Console.
+Now, change your configuration to debug.
+
+```
+Properties > VC++ Directories > Library Directories
+```
+Edit the library directories, and add the DebugBahamutLibrary directory to it.
+Once finished with that, change your configuration to release.
+
+```
+Properties > VC++ Directories > Library Directories
+```
+Edit the library directories, and add the BahamutLibrary directory to it.
+
+Finished!
+Contact me if this did not work for you.
+
 ## Documentation
 
 The engine utilized aims to simplify the games programming experience. As such there is only one window,
@@ -216,3 +253,5 @@ void main() {
 ```
 
 ## Contact
+
+Email: Starkcorbin@gmail.com
