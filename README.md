@@ -139,6 +139,9 @@ void unbindTexture(unsigned int slot);
 All drawing must be done in between begin2D() and end2D().
 begin2D() and end2D() must be in between beginDrawing() and endDrawing()
 
+beginDrawing and endDrawing handle clearing and updating the screen, in addition to a few other things like capping framerates.
+begin2D() prepares a buffer to be added to using the draw functions, and end2D() flushes the buffer to the screen (in the order the draw functions were called).
+
 #### Example
 
 ```cpp
