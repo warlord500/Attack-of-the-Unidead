@@ -3,7 +3,7 @@
 On one particularly ordinary day, something fascinating happened. There was a flash of light, followed by an intense storm.
 Upon the storm subsiding, the dead began to rise from their graves. Only the chosen one, the *unicycler*, can save us now.
 
-This is a group project by the students of Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense
+This is a group project by the students of the Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense
 and absurd take on its theme.
 
 ## TODO
