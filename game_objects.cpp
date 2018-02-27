@@ -24,7 +24,6 @@ void process_unit_line(std::vector <std::string> tokens, std::vector<Unit>& unit
 		unit.identifier[tokens[1].size()] = 0;
 
 		unit.active = false;
-		unit.owner = 0;
 		unit.x = 0;
 		unit.y = 0;
 		units.push_back(unit);
