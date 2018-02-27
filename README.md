@@ -78,6 +78,8 @@ After initialization, the features of the engine become available. The available
 
 ### General
 
+#### window.h
+
 ```cpp
 void setWindowPos(int x, int y);
 void setWindowSize(int width, int height);
@@ -106,6 +108,8 @@ double getElapsedTime();
 
 ### Input
 
+#### window.h
+
 ```cpp
 bool isKeyPressed(unsigned int keycode);
 bool isKeyReleased(unsigned int keycode);
@@ -118,6 +122,8 @@ bool isButtonUp(unsigned int button);
 ```
 
 ### Textures
+
+#### texture.h
 
 ```cpp
 Texture createBlankTexture(int width = 0, int height = 0);
@@ -139,9 +145,6 @@ void unbindTexture(unsigned int slot);
 All drawing must be done in between begin2D() and end2D().
 begin2D() and end2D() must be in between beginDrawing() and endDrawing()
 
-beginDrawing and endDrawing handle clearing and updating the screen, in addition to a few other things like capping framerates.
-begin2D() prepares a buffer to be added to using the draw functions, and end2D() flushes the buffer to the screen (in the order the draw functions were called).
-
 #### Example
 
 ```cpp
@@ -155,6 +158,10 @@ while(true) {
 	endDrawing();
 }
 ```
+beginDrawing and endDrawing handle clearing and updating the screen, in addition to a few other things like capping framerates.
+begin2D() prepares a buffer to be added to using the draw functions, and end2D() flushes the buffer to the screen (in the order the draw functions were called).
+
+#### render2D.h
 
 ```cpp
 void begin2D();
@@ -176,6 +183,22 @@ GLuint rgbaToUint(int r, int g, int b, int a);
 
 ### Font
 
+#### Example
+
+```cpp
+Font font = loadFont("data/font.ttf", 28);
+while(true) {
+	beginDrawing();
+	begin2D();
+	
+	drawText(font, "Hello World", 50, 50);
+	
+	end2D();
+	endDrawing();
+}
+```
+#### font.h
+
 ```cpp
 Texture createTextureFromString(Font& font, const std::string str, GLubyte r = 0, GLubyte g = 0, GLubyte b = 0);
 Font loadFont(const GLchar* filepath, unsigned int size);
@@ -185,6 +208,8 @@ const char* formatText(const char* text, ...);
 ```
 
 ### Entity-Component-System
+
+#### entity.h
 
 ```cpp
 template<class T, class... TArgs>
@@ -199,7 +224,7 @@ void removeComp();
 
 ### Maths
 
-#### Matrix 4x4
+#### mat4f.h
 
 ```cpp
 mat4f(float diagonal);
@@ -240,15 +265,6 @@ friend std::ostream& operator<<(std::ostream& stream, const mat4f& mat);
 
 ### Collision Detection
 
-```cpp
-Rectangle();
-Rectangle(float x, float y, float width, float height);
-
-bool colliding(Rectangle& first, Rectangle& second);
-bool colliding(Rectangle& rect, float x, float y, float width, float height);
-bool colliding(Rectangle& rect, vec2f& point);
-```
-
 ##### Example
 
 ```cpp
@@ -257,6 +273,17 @@ Rectangle second(50, 50, 10, 10);
 if(colliding(first, second)) {
 	std::cout << "Collision!" << std::endl;
 }
+```
+
+#### rectangle.h
+
+```cpp
+Rectangle();
+Rectangle(float x, float y, float width, float height);
+
+bool colliding(Rectangle& first, Rectangle& second);
+bool colliding(Rectangle& rect, float x, float y, float width, float height);
+bool colliding(Rectangle& rect, vec2f& point);
 ```
 
 ### Sample program
