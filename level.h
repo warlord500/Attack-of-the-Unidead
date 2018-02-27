@@ -1,7 +1,6 @@
 #pragma once
 #include "globals.h"
 #include "game_objects.h"
-#include "triggers.h"
 
 struct Map {
 	void create(int width, int height);
