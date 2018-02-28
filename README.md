@@ -45,9 +45,18 @@ bahamut.lib
 ```
 Next, go to:
 ```
-Properties > System > SubSystem
+Properties > Linker > System > SubSystem
 ```
 Change your SubSystem to Console.
+
+After that, go to
+```
+Properties > C/C++ > Preprocessor > Preprocessor Definitions
+```
+Edit the preprocessor definitions to add:
+```
+_CRT_SECURE_NO_WARNINGS
+```
 
 Then change your configuration to debug.
 
