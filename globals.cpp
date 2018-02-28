@@ -40,52 +40,61 @@ void init_globals() {
 
 	//LOADING COLORSCHEME
 	FILE* colors_file = fopen("data/colorscheme.txt", "r");
-	if (colors_file == NULL) {
-		printf("colorscheme.txt does not exist! Going with default colorscheme\n");
-	}
 	char buffer[255];
 	int i = 0;
-	while (true) {
-		i++;
-		buffer[0] = 0;
-		fgets(buffer, 255, colors_file);
-		if (buffer[0] == 0) break;
-		std::vector<std::string> tokens = decipher_line(buffer, "data/colorscheme.txt", i);
+	if (colors_file != NULL) {
+		while (true) {
+			i++;
+			buffer[0] = 0;
+			fgets(buffer, 255, colors_file);
+			if (buffer[0] == 0) break;
+			std::vector<std::string> tokens = decipher_line(buffer, "data/colorscheme.txt", i);
 
-		if (tokens.size() > 0) {
-			char* identifier = (char*)malloc(tokens[0].size() + 1);
-			for (int i = 0; i < tokens[0].size(); ++i)
-				identifier[i] = tokens[0].at(i);
-			identifier[tokens[0].size()] = 0;
+			if (tokens.size() > 0) {
+				char* identifier = (char*)malloc(tokens[0].size() + 1);
+				for (int i = 0; i < tokens[0].size(); ++i)
+					identifier[i] = tokens[0].at(i);
+				identifier[tokens[0].size()] = 0;
 
-			std::vector<std::string> split = tokenize_str(identifier, '_');
-			free(identifier);
+				std::vector<std::string> split = tokenize_str(identifier, '_');
+				free(identifier);
 
-			if (split[0] == "COLOR") {
-				COLORSCHEME[stoi(split[1]) - 1] = vec4f(stoi(tokens[1]) / 255.0f, stoi(tokens[2]) / 255.0f, stoi(tokens[3]) / 255.0f, 1.0f);
-			}
-			else {
-				printf("ERROR: There is an entry in data/colorscheme.txt not related to colors. Did you mispell COLOR or is this in the wrong file?\n");
+				if (split[0] == "COLOR") {
+					COLORSCHEME[stoi(split[1]) - 1] = vec4f(stoi(tokens[1]) / 255.0f, stoi(tokens[2]) / 255.0f, stoi(tokens[3]) / 255.0f, 1.0f);
+				}
+				else {
+					printf("ERROR: There is an entry in data/colorscheme.txt not related to colors. Did you mispell COLOR or is this in the wrong file?\n");
+				}
 			}
 		}
+		fclose(colors_file);
 	}
-	fclose(colors_file);
+	else {
+		printf("colorscheme.txt does not exist! Going with default colorscheme\n");
+		//TODO: set colorscheme fields
+	}
 
 	//LOADING INIT DATA
 	FILE* init_file = fopen("data/init.txt", "r");
 	i = 0;
-	while (true) {
-		i++;
-		buffer[0] = 0;
-		fgets(buffer, 255, init_file);
-		if (buffer[0] == 0) break;
-		std::vector<std::string> tokens = decipher_line(buffer, "data/init.txt", i);
+	if (init_file != NULL) {
+		while (true) {
+			i++;
+			buffer[0] = 0;
+			fgets(buffer, 255, init_file);
+			if (buffer[0] == 0) break;
+			std::vector<std::string> tokens = decipher_line(buffer, "data/init.txt", i);
 
-		if (tokens.size() > 0) {
-			process_init_line(tokens, i);
+			if (tokens.size() > 0) {
+				process_init_line(tokens, i);
+			}
 		}
+		fclose(init_file);
 	}
-	fclose(init_file);
+	else {
+		printf("init.txt does not exist! Going with default settings\n");
+		//config defaults should already have been set.
+	}
 
 	printf("DONE\n");
 }
