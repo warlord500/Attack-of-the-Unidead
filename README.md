@@ -1,7 +1,5 @@
 # Attack of the Unidead
 
-# TEST BY Cody
-
 On one particularly ordinary day, something fascinating happened. There was a flash of light, followed by an intense storm.
 Upon the storm subsiding, the dead began to rise from their graves. Only the chosen one, the *unicycler*, can save us now.
 
