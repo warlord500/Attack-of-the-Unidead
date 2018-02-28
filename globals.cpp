@@ -40,6 +40,9 @@ void init_globals() {
 
 	//LOADING COLORSCHEME
 	FILE* colors_file = fopen("data/colorscheme.txt", "r");
+	if (colors_file == NULL) {
+		printf("colorscheme.txt does not exist! Going with default colorscheme\n");
+	}
 	char buffer[255];
 	int i = 0;
 	while (true) {
