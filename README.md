@@ -318,7 +318,17 @@ void main() {
     disposeWindow();
 }
 ```
+# Contributors
 
-## Contact
+## Project Manager
+Corbin Stark
+## Lead Programmer
+Dog
+## Lead Artist
+Run
+## Software Testers
+
+
+# Contact
 
 Email: starkcorbin@gmail.com
