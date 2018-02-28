@@ -63,6 +63,21 @@ Edit the library directories, and add the BahamutLibrary directory to it.
 Finished!
 Contact me if this did not work for you.
 
+## Using git (for the CS student contributors)
+
+To get the repository on your computer, use the command:
+```
+git clone https://github.com/CorbinStark/Attack-of-the-Unidead.git
+```
+To remove a file, use the command:
+```
+git rm file
+```
+To commit your changes, use the command:
+```
+git commit
+```
+
 ## Documentation
 
 The engine utilized aims to simplify the games programming experience. As such there is only one window,
@@ -323,11 +338,11 @@ void main() {
 ### Project Manager
 Corbin Stark
 ### Lead Programmer
-Dog
+Jadon Belezos
 ### Lead Artist
-Run
+Cody Potters
 ### Software Testers
-
+Bela, Jared, John
 
 ## Contact
 
