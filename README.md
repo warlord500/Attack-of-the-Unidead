@@ -4,7 +4,7 @@ On one particularly ordinary day, something fascinating happened. There was a fl
 Upon the storm subsiding, the dead began to rise from their graves. Only the chosen one, the *unicycler*, can save us now.
 
 This is a group project by the students of the Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense
-and absurd take on its theme. The project uses Unity.
+and absurd take on its theme. The project uses the Godot engine.
 
 ## TODO
 
@@ -21,10 +21,10 @@ and absurd take on its theme. The project uses Unity.
 - [ ] Create UI skins for menus
 - [ ] Create interface for misc. things like health
 
-## Unity
+## Godot
 
-Download this, link it to visual studio.
-https://store.unity.com
+Download this
+https://godotengine.org/download/windows
 
 ## Documentation
 
