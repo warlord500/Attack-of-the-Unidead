@@ -35,6 +35,10 @@ Documentation for how to use functions we write will go here
 ### Project Manager
 Corbin Stark
 ### Lead Programmer
+Don't know yet
+### Programmers
+Corbin Stark
+### Code Quality Assurance
 Jadon Belezos
 ### Lead Artist
 Cody Potter
