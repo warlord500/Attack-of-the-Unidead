@@ -8,18 +8,18 @@ and absurd take on its theme. The project uses Unity.
 
 ## TODO
 
-- [x] Load configuration from init.txt file
-- [x] Load unit (enemy) data from file
+- [ ] Load configuration from init.txt file
+- [ ] Load monster data from file
 - [ ] Figure out someone to do music because no one can agree
-- [ ] Create room editor to design rooms to be inserted into dungeon generator
+- [ ] Design rooms to be inserted into dungeon generator
 - [ ] Create dungeon generator
-- [ ] Draw sprite art for Unicycle dude
+- [x] Draw sprite art for Unicycle dude
 - [ ] Design enemies
 - [ ] Draw art for enemies
-- [ ] Create enemies
+- [ ] Create enemies (in code)
 - [ ] Implement enemy AI
-- [ ] Create UI for menus
-- [ ] Create interface for things like health
+- [ ] Create UI skins for menus
+- [ ] Create interface for misc. things like health
 
 ## Unity
 
