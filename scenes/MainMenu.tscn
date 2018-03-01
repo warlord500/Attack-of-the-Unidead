@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/MainMenu/panel_1.gd" type="Script" id=1]
 [ext_resource path="res://scripts/MainMenu/Label_positioning.gd" type="Script" id=2]
 [ext_resource path="res://scripts/MainMenu/Button.gd" type="Script" id=3]
+[ext_resource path="res://scripts/MainMenu/Button2.gd" type="Script" id=4]
+[ext_resource path="res://scripts/MainMenu/Button3.gd" type="Script" id=5]
 
 [node name="Menu" type="Control" index="0"]
 
@@ -82,7 +84,6 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 10.0
 margin_right = 165.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -147,6 +148,7 @@ group = null
 text = "Load Game"
 flat = false
 align = 1
+script = ExtResource( 4 )
 
 [node name="Button3" type="Button" parent="Panel/VBoxContainer" index="3"]
 
@@ -171,5 +173,6 @@ group = null
 text = "Exit Game"
 flat = false
 align = 1
+script = ExtResource( 5 )
 
 
