@@ -8,4 +8,4 @@ func _ready():
 
 func _process(delta):
 	set_position(Vector2(
-	(get_viewport_rect().size.x / 2) - (self.get_rect().size.x / 2), 20))
+	(get_viewport_rect().size.x / 2) - (self.get_rect().size.x / 2), 35))

@@ -1,4 +1,4 @@
-extends Panel
+extends VBoxContainer
 
 func _ready():
 	set_position(Vector2(
@@ -9,5 +9,5 @@ func _ready():
 func _process(delta):
 	set_position(Vector2(
 	(get_viewport_rect().size.x / 2) - (self.get_rect().size.x / 2), 
-	(get_viewport_rect().size.y / 2) - (self.get_rect().size.y / 2))
+	(get_viewport_rect().size.y / 2) - (self.get_rect().size.y / 2) - 40)
 	)

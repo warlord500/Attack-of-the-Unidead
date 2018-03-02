@@ -6,4 +6,4 @@ func _ready():
 	add_color_override("font_color", Color(.5, .5, .5, 1))
 
 func onPress():
-	get_tree().change_scene("res://scenes/start_newgame_cutscene.tscn")
+	pass
