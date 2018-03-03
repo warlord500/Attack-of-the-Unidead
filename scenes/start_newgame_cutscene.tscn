@@ -5,7 +5,7 @@
 [ext_resource path="res://font/main_font.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scripts/Dialogue_no_box.gd" type="Script" id=4]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -32,7 +32,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 33.0
-margin_top = 281.0
+margin_top = 242.0
 margin_right = 616.0
 margin_bottom = 349.0
 rect_pivot_offset = Vector2( 0, 0 )

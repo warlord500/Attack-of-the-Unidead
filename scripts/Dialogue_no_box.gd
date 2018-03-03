@@ -7,16 +7,15 @@ var textToDisplay = ""
 
 var currentChar = 0
 
-const SPEED = .06
+const SPEED = 21.1
 
 func _ready():
-	# _display_dialogue("Hey!\n\nWake up!")
 	pass
 
 func _process(delta):
 	if(displaying):
 		timer += delta;
-		if(timer > SPEED && currentChar < textToDisplay.length()):
+		if(timer > (1/SPEED) && currentChar < textToDisplay.length()):
 			set_bbcode(get_bbcode() + textToDisplay[currentChar])
 			currentChar += 1
 			timer = 0
