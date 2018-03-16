@@ -9,10 +9,11 @@
 #include <algorithm>
 #include <audio.h>
 
+
 //VAR DEFAULTS (if they aren't defined in the config files for some reason)
 bool DISPLAY_FPS = false;
 bool COMPRESS_SAVES = false;
-bool SOUND_ON = true;
+bool SOUND = true;
 bool VSYNC = false;
 bool RESIZABLE = false;
 bool PRIMARY_MONITOR = true;
@@ -32,19 +33,27 @@ Texture button_tex_n;
 Texture button_tex_h;
 Texture menu_tex[9];
 
+
 //internal variables
 INTERNAL int BODY_FONT_SIZE;
 INTERNAL int HEADER_FONT_SIZE;
+INTERNAL char* BODY_FONT_PATH;
+INTERNAL char* HEADER_FONT_PATH;
+const char const* ART_DIRECTORY = "data/art/";
+
 INTERNAL int FPS_CAP = 100;
 INTERNAL int WINDOW_WIDTH = 800;
 INTERNAL int WINDOW_HEIGHT = 600;
 INTERNAL bool FULLSCREEN = false;
-INTERNAL char* BODYFONTPATH;
-INTERNAL char* HEADERFONTPATH;
+
 
 //FUNCTION PROTOTYPES
 std::vector<std::string> decipher_line(char* line, const char* filename, int line_num);
 void process_init_line(std::vector<std::string> tokens, int line_num);
+
+void printErr(const char const* message, const int line_num) {
+	printf("ERROR IN FILE 'data/init.txt', line #%i:\t%s\n", line_num, message);
+};
 
 void init_globals() {
 	printf("Loading launch data from configuration files...\n");
@@ -98,13 +107,13 @@ void init_context(const char* title) {
 	//initAudio();
 
 	printf("Loading font into VRAM...\n");
-	BODY_FONT = loadFont(BODYFONTPATH, BODY_FONT_SIZE);
-	HEADER_FONT = loadFont(HEADERFONTPATH, HEADER_FONT_SIZE);
+	BODY_FONT = loadFont(BODY_FONT_PATH, BODY_FONT_SIZE);
+	HEADER_FONT = loadFont(HEADER_FONT_PATH, HEADER_FONT_SIZE);
 
-	if (BODY_FONT.characters[0] == NULL) printf("BODY_FONT was not loaded correctly. The file (%s) is not valid.\n", BODYFONTPATH);
-	if (HEADER_FONT.characters[0] == NULL) printf("HEADER_FONT was not loaded correctly. The file (%s) is not valid.\n", HEADERFONTPATH);
-	free(BODYFONTPATH);
-	free(HEADERFONTPATH);
+	if (BODY_FONT.characters[0] == NULL) printf("BODY_FONT was not loaded correctly. The file (%s) is not valid.\n", HEADER_FONT_PATH);
+	if (HEADER_FONT.characters[0] == NULL) printf("HEADER_FONT was not loaded correctly. The file (%s) is not valid.\n", HEADER_FONT_PATH);
+	free(BODY_FONT_PATH);
+	free(HEADER_FONT_PATH);
 
 	setFPSCap(FPS_CAP);
 	setVSync(VSYNC);
@@ -153,26 +162,11 @@ std::vector<std::string> tokenize_str(const char* endOfSlice,  const char sepera
 }
 
 bool is_a_number(const char c) {
-	switch (c) {
-	case '0': 
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-		return true;
-	default:
-		return false;
-	}
+	return c > '0' && c < '9';
 }
 
-void printErr(const char const* message, const int line_num) {
-	printf("ERROR IN FILE 'data/init.txt', line #%i:\t%s\n", line_num, message);
-}
+
+
 
 #define ERR_ARG(NAME) \
 	if(tokens.size() > 2) { \
@@ -181,7 +175,7 @@ void printErr(const char const* message, const int line_num) {
 
 #define ERR_INIT_BOOL(NAME) \
 		if(tokens[0] == #NAME){  \
-			ERR_ARG(NAME) \
+			ERR_ARG(NAME); \
          \
 			if (tokens[1] == "YES") { \
 				NAME = true;  \
@@ -206,17 +200,16 @@ void printErr(const char const* message, const int line_num) {
 					} \
 			} 
 
-#define ERR_INIT_STRING(NAME) \
-		if (tokens[0] == #NAME) { \
-					ERR_ARG(NAME); \	
-				\
-				std::string path = "data/art/"; \
-				/*path.append(tokens[1]); \
+#define ERR_INIT_STRING(NAME)  \
+		if (tokens[0] == #NAME)  { \
+				std::string path = ART_DIRECTORY; \
+				path.append(tokens[1]); \
 				NAME = (char*)malloc(path.size() + 1); \
 				for (unsigned int i = 0; i < path.size(); ++i) \
 					NAME[i] = path[i]; \
-				NAME[path.size()] = 0;\
-		} */
+				NAME[path.size()] = 0; \
+		} 
+	
 //something is wrong for the code above but i dont know what it is yet!
 				
 
@@ -224,40 +217,7 @@ void printErr(const char const* message, const int line_num) {
 //essentially just a list of possible configuration statements and handling errors
 //pretty much has to be hardcoded
 void process_init_line(const std::vector<std::string> tokens, const int line_num) {
-	if (tokens[0] == "SOUND") {
-		ERR_ARG(SOUND);
-		if (tokens[1] == "YES") SOUND_ON = true;
-		else if (tokens[1] == "NO") SOUND_ON = false;
-		else {
-			printErr("SOUND can only equal YES or NO\n", line_num);
-
-		}
-	}
-
-	ERR_INIT_BOOL(FULLSCREEN);
-	ERR_INIT_BOOL(RESIZABLE);
-	ERR_INIT_BOOL(DISPLAY_FPS);
-	ERR_INIT_BOOL(VSYNC);
-	ERR_INIT_BOOL(COMPRESS_SAVES);
-
-
-	if (tokens[0] == "MONITOR") {
-		if (tokens.size() > 2) ERR_ARG(MONITOR)
-		if (tokens[1] == "PRIMARY") PRIMARY_MONITOR = true;
-		else if (tokens[1] == "SECONDARY") PRIMARY_MONITOR = false;
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tVMONITOR can only equal YES or NO\n", "data/init.txt", line_num);
-		}
-	}
 	
-	ERR_INIT_NUMBER(SOUND_VOLUME);
-	ERR_INIT_NUMBER(MUSIC_VOLUME);
-	ERR_INIT_NUMBER(MASTER_VOLUME);
-	ERR_INIT_NUMBER(WINDOW_WIDTH);
-	ERR_INIT_NUMBER(WINDOW_HEIGHT);
-	ERR_INIT_NUMBER(FPS_CAP);
-	ERR_INIT_NUMBER(BODY_FONT_SIZE);
-	ERR_INIT_NUMBER(HEADER_FONT_SIZE);
 
 
 	if (tokens[0] == "TEXTURE_PARAMETER") {
@@ -273,26 +233,25 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 			printf("ERROR IN FILE '%s', line #%i:\tTEXTURE_PARAMETER must be NEAREST or LINEAR\n", "data/init.txt", line_num);
 		}
 	}
+	ERR_INIT_BOOL(PRIMARY_MONITOR);
+	ERR_INIT_BOOL(SOUND);
+	ERR_INIT_BOOL(FULLSCREEN);
+	ERR_INIT_BOOL(RESIZABLE);
+	ERR_INIT_BOOL(DISPLAY_FPS);
+	ERR_INIT_BOOL(VSYNC);
+	ERR_INIT_BOOL(COMPRESS_SAVES);	
 
-	if (tokens[0] == "BODY_FONT") {
-		ERR_ARG(BODY_FONT);
-		std::string path = "data/art/";
-		path.append(tokens[1]);
-		BODYFONTPATH = (char*)malloc(path.size() + 1);
-		for (unsigned int i = 0; i < path.size(); ++i)
-			BODYFONTPATH[i] = path[i];
-		BODYFONTPATH[path.size()] = 0;
-	}
+	ERR_INIT_NUMBER(SOUND_VOLUME);
+	ERR_INIT_NUMBER(MUSIC_VOLUME);
+	ERR_INIT_NUMBER(MASTER_VOLUME);
+	ERR_INIT_NUMBER(WINDOW_WIDTH);
+	ERR_INIT_NUMBER(WINDOW_HEIGHT);
+	ERR_INIT_NUMBER(FPS_CAP);
+	ERR_INIT_NUMBER(BODY_FONT_SIZE);
+	ERR_INIT_NUMBER(HEADER_FONT_SIZE);
 
-	if (tokens[0] == "HEADER_FONT") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tHEADER_FONT should only have one argument\n", "data/init.txt", line_num);
-		std::string path = "data/art/";
-		path.append(tokens[1]);
-		HEADERFONTPATH = (char*)malloc(path.size() + 1);
-		for (unsigned int i = 0; i < path.size(); ++i)
-			HEADERFONTPATH[i] = path[i];
-		HEADERFONTPATH[path.size()] = 0;
-	}
+	ERR_INIT_STRING(BODY_FONT_PATH);
+	ERR_INIT_STRING(HEADER_FONT_PATH);
 }
 
 std::vector<std::string> decipher_line(char* line, const char* filename, const int line_num) {
@@ -306,13 +265,13 @@ std::vector<std::string> decipher_line(char* line, const char* filename, const i
 		tokens = tokenize_str(line, '=');
 		if (tokens[0].empty()) {
 			if (tokens.size() > 1)
-				printf("ERROR IN FILE '%s', line #%i:\tNo identifier in parenthesis.\n", filename, line_num);
+				printErr("No identifier in parenthesis.", line_num);
 			else
-				printf("ERROR IN FILE '%s', line #%i:\tEmpty parenthesis!\n", filename, line_num);
+				printErr("Empty parenthesis!", line_num);
 		}
 		else if (tokens.size() == 1) return tokens; //only 1 is fine, it's a flag if there is only one. (If there was SUPPOSED to be an = sign
 													//then that will be discovered later and an error presented then.)
-		else if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tMultiple '=' present inside parenthesis.\n", filename, line_num);
+		else if (tokens.size() > 2) printErr("Multiple '=' present inside parenthesis.", line_num);
 		else {
 			std::vector<std::string> parameters;
 			char* second_part = (char*)malloc(tokens[1].size() + 1);

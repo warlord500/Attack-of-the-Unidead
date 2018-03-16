@@ -6,14 +6,13 @@
 (MASTER_VOLUME = 200)
 (FULLSCREEN = NO)
 
-Can be PRIMARY or SECONDARY
-(MONITOR = PRIMARY)
+(PRIMARY_MONITOR = YES)
 (WINDOW_WIDTH = 640)
 (WINDOW_HEIGHT = 360)
 
 Name of truetype (ttf) file to be used as the font. File must be in data/art
-(BODY_FONT = pixantiqua.ttf)
-(HEADER_FONT = alagard.ttf)
+(BODY_FONT_PATH = pixantiqua.ttf)
+(HEADER_FONT_PATH = alagard.ttf)
 (BODY_FONT_SIZE = 12)
 (HEADER_FONT_SIZE = 16)
 (RESIZABLE = YES)
