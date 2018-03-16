@@ -100,6 +100,7 @@ void init_globals() {
 
 void init_context(const char* title) {
 	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, title, FULLSCREEN, RESIZABLE, PRIMARY_MONITOR);
+	//initAudio();
 
 	printf("Loading font into VRAM...\n");
 	BODY_FONT = loadFont(BODYFONTPATH, BODY_FONT_SIZE);

@@ -1,4 +1,18 @@
-﻿  bahamut.lib(SOIL.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+﻿  globals.cpp
+c:\program files (x86)\windows kits\10\include\10.0.16299.0\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\darkz\documents\github\attack-of-the-unidead\engine\bahamutinclude\glfw\glfw3.h(98): note: see previous definition of 'APIENTRY'
+c:\program files (x86)\windows kits\10\include\10.0.16299.0\um\winuser.h(3515): warning C4005: 'MOD_ALT': macro redefinition
+  c:\users\darkz\documents\github\attack-of-the-unidead\engine\bahamutinclude\defines.h(272): note: see previous definition of 'MOD_ALT'
+c:\program files (x86)\windows kits\10\include\10.0.16299.0\um\winuser.h(3517): warning C4005: 'MOD_SHIFT': macro redefinition
+  c:\users\darkz\documents\github\attack-of-the-unidead\engine\bahamutinclude\defines.h(266): note: see previous definition of 'MOD_SHIFT'
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(65): warning C4018: '<': signed/unsigned mismatch
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(117): warning C4244: '*=': conversion from 'float' to 'int', possible loss of data
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(336): warning C4018: '<': signed/unsigned mismatch
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(345): warning C4018: '<': signed/unsigned mismatch
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(372): warning C4018: '<': signed/unsigned mismatch
+c:\users\darkz\documents\github\attack-of-the-unidead\game\attack of the unidead\globals.cpp(379): warning C4018: '<': signed/unsigned mismatch
+  bahamut.lib(SOIL.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
