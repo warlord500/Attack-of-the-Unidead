@@ -42,10 +42,6 @@ INTERNAL bool FULLSCREEN = false;
 INTERNAL char* BODYFONTPATH;
 INTERNAL char* HEADERFONTPATH;
 
-INTERNAL u16 texture_count = 0;
-INTERNAL u16 textures_size = 1;
-INTERNAL Texture* textures = (Texture*)malloc(textures_size * sizeof(Texture));
-
 //FUNCTION PROTOTYPES
 std::vector<std::string> decipher_line(char* line, const char* filename, int line_num);
 void process_init_line(std::vector<std::string> tokens, int line_num);
@@ -416,6 +412,7 @@ bool character_exists(char* string, char to_check) {
 	return false;
 }
 
+//TODO: Make this work.
 void message(char* message) {
 	char* ptr = message;
 	//loop until null termination
