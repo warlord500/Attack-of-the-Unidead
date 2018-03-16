@@ -1,0 +1,9 @@
+*.exe
+*.db
+*.dll
+*.tlog
+GAME/Attack of the unidead/Debug
+*.obj
+#*.pdb
+*.idb
+
