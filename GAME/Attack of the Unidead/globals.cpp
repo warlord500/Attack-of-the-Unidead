@@ -170,154 +170,99 @@ bool is_a_number(const char c) {
 	}
 }
 
+void printErr(const char const* message, const int line_num) {
+	printf("ERROR IN FILE 'data/init.txt', line #%i:\t%s\n", line_num, message);
+}
+
+#define ERR_ARG(NAME) \
+	if(tokens.size() > 2) { \
+		printErr("NAME should only have one argument\n", line_num); \
+     } 
+
+#define ERR_INIT_BOOL(NAME) \
+		if(tokens[0] == "NAME"){  \
+			ERR_ARG(NAME) \
+         \
+			if (tokens[1] == "YES") { \
+				NAME = true;  \
+			} \
+			else if (tokens[1] == "NO") { \
+					NAME = false; \
+			} \
+			else { \
+				printErr("NAME can only equal YES or NO\n", line_num); \
+			} \
+         }
+
+#define ERR_INIT_NUMBER(NAME) \
+			if (tokens[0] == "NAME") { \
+					ERR_ARG(NAME) \
+					\
+					if (is_a_number(tokens[1].at(0))) { \
+						NAME = stoi(tokens[1]); \
+					} \
+					else { \
+						printErr("NAME must be a whole number\n", line_num); \
+					} \
+			} 
+
+#define ERR_INIT_STRING(NAME) \
+		if (tokens[0] == "NAME") { \
+					ERR_ARG(NAME); \	
+				\
+				std::string path = "data/art/"; \
+				/*path.append(tokens[1]); \
+				NAME = (char*)malloc(path.size() + 1); \
+				for (unsigned int i = 0; i < path.size(); ++i) \
+					NAME[i] = path[i]; \
+				NAME[path.size()] = 0;\
+		} */
+//something is wrong for the code above but i dont know what it is yet!
+				
+
+		
 //essentially just a list of possible configuration statements and handling errors
 //pretty much has to be hardcoded
 void process_init_line(const std::vector<std::string> tokens, const int line_num) {
 	if (tokens[0] == "SOUND") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tSOUND should only have one argument\n", "data/init.txt", line_num);
+		ERR_ARG(SOUND);
 		if (tokens[1] == "YES") SOUND_ON = true;
 		else if (tokens[1] == "NO") SOUND_ON = false;
 		else {
-			printf("ERROR IN FILE '%s', line #%i:\tSOUND can only equal YES or NO\n", "data/init.txt", line_num);
+			printErr("SOUND can only equal YES or NO\n", line_num);
+
 		}
 	}
 
-	if (tokens[0] == "FULLSCREEN") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tFULLSCREEN should only have one argument\n", "data/init.txt", line_num);
-		if (tokens[1] == "YES") FULLSCREEN = true;
-		else if (tokens[1] == "NO") FULLSCREEN = false;
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tFULLSCREEN can only equal YES or NO\n", "data/init.txt", line_num);
-		}
-	}
+	ERR_INIT_BOOL(FULLSCREEN);
+	ERR_INIT_BOOL(RESIZABLE);
+	ERR_INIT_BOOL(DISPLAY_FPS);
+	ERR_INIT_BOOL(VSYNC);
+	ERR_INIT_BOOL(COMPRESS_SAVES);
 
-	if (tokens[0] == "RESIZABLE") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tRESIZABLE should only have one argument\n", "data/init.txt", line_num);
-		if (tokens[1] == "YES") RESIZABLE = true;
-		else if (tokens[1] == "NO") RESIZABLE = false;
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tRESIZABLE can only equal YES or NO\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "DISPLAY_FPS") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tDISPLAY_FPS should only have one argument\n", "data/init.txt", line_num);
-		if (tokens[1] == "YES") DISPLAY_FPS = true;
-		else if (tokens[1] == "NO") DISPLAY_FPS = false;
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tDISPLAY_FPS can only equal YES or NO\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "VSYNC") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tVSYNC should only have one argument\n", "data/init.txt", line_num);
-		if (tokens[1] == "YES") VSYNC = true;
-		else if (tokens[1] == "NO") VSYNC = false;
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tVSYNC can only equal YES or NO\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "COMPRESS_SAVES") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tCOMPRESS_SAVES should only have one argument\n", "data/init.txt", line_num);
-		if (tokens[1] == "YES") COMPRESS_SAVES = true;
-		else if (tokens[1] == "NO") COMPRESS_SAVES = false;
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tCOMPRESS_SAVES can only equal YES or NO\n", "data/init.txt", line_num);
-		}
-	}
 
 	if (tokens[0] == "MONITOR") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tMONITOR should only have one argument\n", "data/init.txt", line_num);
+		if (tokens.size() > 2) ERR_ARG(MONITOR)
 		if (tokens[1] == "PRIMARY") PRIMARY_MONITOR = true;
 		else if (tokens[1] == "SECONDARY") PRIMARY_MONITOR = false;
 		else {
 			printf("ERROR IN FILE '%s', line #%i:\tVMONITOR can only equal YES or NO\n", "data/init.txt", line_num);
 		}
 	}
+	
+	ERR_INIT_NUMBER(SOUND_VOLUME);
+	ERR_INIT_NUMBER(MUSIC_VOLUME);
+	ERR_INIT_NUMBER(MASTER_VOLUME);
+	ERR_INIT_NUMBER(WINDOW_WIDTH);
+	ERR_INIT_NUMBER(WINDOW_HEIGHT);
+	ERR_INIT_NUMBER(FPS_CAP);
+	ERR_INIT_NUMBER(BODY_FONT_SIZE);
+	ERR_INIT_NUMBER(HEADER_FONT_SIZE);
 
-	if (tokens[0] == "SOUND_VOLUME") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tSOUND_VOLUME should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			SOUND_VOLUME = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tSOUND_VOLUME must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "MUSIC_VOLUME") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tMUSIC_VOLUME should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			MUSIC_VOLUME = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tMUSIC_VOLUME must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "MASTER_VOLUME") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tMUSIC_VOLUME should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			MUSIC_VOLUME = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tMUSIC_VOLUME must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "WINDOW_WIDTH") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tWINDOW_WIDTH should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			WINDOW_WIDTH = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tWINDOW_WIDTH must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "WINDOW_HEIGHT") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tWINDOW_HEIGHT should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			WINDOW_HEIGHT = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tWINDOW_HEIGHT must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "FPS_CAP") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tFPS_CAP should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			FPS_CAP = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tFPS_CAP must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "BODY_FONT_SIZE") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tBODY_FONT_SIZE should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			BODY_FONT_SIZE = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tBODY_FONT_SIZE must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
-
-	if (tokens[0] == "HEADER_FONT_SIZE") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tHEADER_FONT_SIZE should only have one argument\n", "data/init.txt", line_num);
-		if (is_a_number(tokens[1].at(0))) {
-			HEADER_FONT_SIZE = stoi(tokens[1]);
-		}
-		else {
-			printf("ERROR IN FILE '%s', line #%i:\tHEADER_FONT_SIZE must be a whole number\n", "data/init.txt", line_num);
-		}
-	}
 
 	if (tokens[0] == "TEXTURE_PARAMETER") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tFPS_CAP should only have one argument\n", "data/init.txt", line_num);
+		ERR_ARG(TEXTURE_PARAMATER);
+
 		if (tokens[1] == "NEAREST") {
 			TEXTURE_PARAM = GL_NEAREST;
 		}
@@ -330,7 +275,7 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 	}
 
 	if (tokens[0] == "BODY_FONT") {
-		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tBODY_FONT should only have one argument\n", "data/init.txt", line_num);
+		ERR_ARG(BODY_FONT);
 		std::string path = "data/art/";
 		path.append(tokens[1]);
 		BODYFONTPATH = (char*)malloc(path.size() + 1);
@@ -338,6 +283,7 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 			BODYFONTPATH[i] = path[i];
 		BODYFONTPATH[path.size()] = 0;
 	}
+
 	if (tokens[0] == "HEADER_FONT") {
 		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tHEADER_FONT should only have one argument\n", "data/init.txt", line_num);
 		std::string path = "data/art/";
