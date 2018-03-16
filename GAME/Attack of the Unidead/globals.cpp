@@ -51,6 +51,8 @@ INTERNAL bool FULLSCREEN = false;
 std::vector<std::string> decipher_line(char* line, const char* filename, int line_num);
 void process_init_line(std::vector<std::string> tokens, int line_num);
 
+//remove the commonality in error messages 
+//and get type checking, instead of undefined behaivor!
 void printErr(const char const* message, const int line_num) {
 	printf("ERROR IN FILE 'data/init.txt', line #%i:\t%s\n", line_num, message);
 };
@@ -104,16 +106,19 @@ void init_globals() {
 
 void init_context(const char* title) {
 	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, title, FULLSCREEN, RESIZABLE, PRIMARY_MONITOR);
-	//initAudio();
 
 	printf("Loading font into VRAM...\n");
-	BODY_FONT = loadFont(BODY_FONT_PATH, BODY_FONT_SIZE);
-	HEADER_FONT = loadFont(HEADER_FONT_PATH, HEADER_FONT_SIZE);
+	
+	const char const*  msg = "%s was not loaded correctly. The file (%s) is not valid.\n";
+	#define LOAD_FONT(NAME) {\
+			 NAME = loadFont(NAME ## _PATH, NAME ## _SIZE); \
+			 if (NAME.characters[0] == NULL) printf(msg, #NAME, NAME ## _PATH); \
+			 free(NAME ## _PATH); \
+		}
 
-	if (BODY_FONT.characters[0] == NULL) printf("BODY_FONT was not loaded correctly. The file (%s) is not valid.\n", HEADER_FONT_PATH);
-	if (HEADER_FONT.characters[0] == NULL) printf("HEADER_FONT was not loaded correctly. The file (%s) is not valid.\n", HEADER_FONT_PATH);
-	free(BODY_FONT_PATH);
-	free(HEADER_FONT_PATH);
+	LOAD_FONT(BODY_FONT);
+	LOAD_FONT(HEADER_FONT);
+	#undef LOAD_FONT
 
 	setFPSCap(FPS_CAP);
 	setVSync(VSYNC);
@@ -165,9 +170,6 @@ bool is_a_number(const char c) {
 	return c > '0' && c < '9';
 }
 
-
-
-
 #define ERR_ARG(NAME) \
 	if(tokens.size() > 2) { \
 		printErr(#NAME "should only have one argument\n", line_num); \
@@ -186,6 +188,7 @@ bool is_a_number(const char c) {
 			else { \
 				printErr(#NAME "can only equal YES or NO\n", line_num); \
 			} \
+			return; \
          }
 
 #define ERR_INIT_NUMBER(NAME) \
@@ -198,16 +201,19 @@ bool is_a_number(const char c) {
 					else { \
 						printErr(#NAME "must be a whole number\n", line_num); \
 					} \
+				return; \
 			} 
 
 #define ERR_INIT_STRING(NAME)  \
 		if (tokens[0] == #NAME)  { \
+				ERR_ARG(NAME); \
 				std::string path = ART_DIRECTORY; \
 				path.append(tokens[1]); \
 				NAME = (char*)malloc(path.size() + 1); \
 				for (unsigned int i = 0; i < path.size(); ++i) \
 					NAME[i] = path[i]; \
 				NAME[path.size()] = 0; \
+				return; \
 		} 
 	
 //something is wrong for the code above but i dont know what it is yet!
@@ -218,8 +224,6 @@ bool is_a_number(const char c) {
 //pretty much has to be hardcoded
 void process_init_line(const std::vector<std::string> tokens, const int line_num) {
 	
-
-
 	if (tokens[0] == "TEXTURE_PARAMETER") {
 		ERR_ARG(TEXTURE_PARAMATER);
 
@@ -230,9 +234,10 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 			TEXTURE_PARAM = GL_LINEAR;
 		}
 		else {
-			printf("ERROR IN FILE '%s', line #%i:\tTEXTURE_PARAMETER must be NEAREST or LINEAR\n", "data/init.txt", line_num);
+			printErr("TEXTURE_PARAMETER must be NEAREST or LINEAR", line_num);
 		}
 	}
+
 	ERR_INIT_BOOL(PRIMARY_MONITOR);
 	ERR_INIT_BOOL(SOUND);
 	ERR_INIT_BOOL(FULLSCREEN);
@@ -240,6 +245,7 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 	ERR_INIT_BOOL(DISPLAY_FPS);
 	ERR_INIT_BOOL(VSYNC);
 	ERR_INIT_BOOL(COMPRESS_SAVES);	
+#undef ERR_INIT_BOOL
 
 	ERR_INIT_NUMBER(SOUND_VOLUME);
 	ERR_INIT_NUMBER(MUSIC_VOLUME);
@@ -249,10 +255,18 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 	ERR_INIT_NUMBER(FPS_CAP);
 	ERR_INIT_NUMBER(BODY_FONT_SIZE);
 	ERR_INIT_NUMBER(HEADER_FONT_SIZE);
+#undef ERR_INIT_NUMBER
 
 	ERR_INIT_STRING(BODY_FONT_PATH);
 	ERR_INIT_STRING(HEADER_FONT_PATH);
+#undef ERR_INIT_STRING
+
+
+
+	//at this point we have an invalid data field. 
+	printf("ERROR in file 'data/init.txt' on line %i, DATA FIELD IS UNKNOWN\n",line_num);
 }
+
 
 std::vector<std::string> decipher_line(char* line, const char* filename, const int line_num) {
 	std::vector<std::string> tokens;

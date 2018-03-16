@@ -15,7 +15,7 @@
 //initialization data. Loaded from a file and should be treated as const after that point.
 global_var bool DISPLAY_FPS;
 global_var bool COMPRESS_SAVES;
-global_var bool SOUND_ON;
+global_var bool SOUND;
 global_var bool VSYNC;
 global_var u8 MUSIC_VOLUME;
 global_var u8 SOUND_VOLUME;
