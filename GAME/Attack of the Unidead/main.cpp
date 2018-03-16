@@ -16,7 +16,7 @@
 
 #include "gui.h"
 
-void main() {
+int main() {
 	init_globals();
 	init_context("Attack of the Unidead");
 
@@ -63,4 +63,5 @@ void main() {
 	}
 	disposeTexture(cursor);
 	disposeWindow();
+	return 0;
 }

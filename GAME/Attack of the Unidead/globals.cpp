@@ -51,23 +51,18 @@ void init_globals() {
 
 	//LOADING COLORSCHEME
 	FILE* colors_file = fopen("data/colorscheme.txt", "r");
-	char buffer[255];
+	const int SIZE_OF_BUFFER = 255;
+	char buffer[SIZE_OF_BUFFER] = {}; //set all values to 
 	int i = 0;
 	while (true) {
 		i++;
 		buffer[0] = 0;
-		fgets(buffer, 255, colors_file);
+		fgets(buffer, SIZE_OF_BUFFER, colors_file);
 		if (buffer[0] == 0) break;
 		std::vector<std::string> tokens = decipher_line(buffer, "data/colorscheme.txt", i);
 
 		if (tokens.size() > 0) {
-			char* identifier = (char*)malloc(tokens[0].size() + 1);
-			for (int i = 0; i < tokens[0].size(); ++i)
-				identifier[i] = tokens[0].at(i);
-			identifier[tokens[0].size()] = 0;
-
-			std::vector<std::string> split = tokenize_str(identifier, '_');
-			free(identifier);
+			std::vector<std::string> split = tokenize_str(tokens[0].c_str(), '_');
 
 			if (split[0] == "COLOR") {
 				COLORSCHEME[stoi(split[1]) - 1] = vec4f(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3]), 255.0f);
@@ -81,21 +76,21 @@ void init_globals() {
 
 	//LOADING INIT DATA
 	FILE* init_file = fopen("data/init.txt", "r");
-	i = 0;
+	int j = 0;
 	while (true) {
-		i++;
+		j++;
 		buffer[0] = 0;
-		fgets(buffer, 255, init_file);
+		fgets(buffer, SIZE_OF_BUFFER, init_file);
 		if (buffer[0] == 0) break;
-		std::vector<std::string> tokens = decipher_line(buffer, "data/init.txt", i);
+		std::vector<std::string> tokens = decipher_line(buffer, "data/init.txt", j);
 
 		if (tokens.size() > 0) {
-			process_init_line(tokens, i);
+			process_init_line(tokens, j);
 		}
 	}
 	fclose(init_file);
 
-	printf("DONE\n");
+	printf("DONE LOADING\n");
 }
 
 void init_context(const char* title) {
@@ -115,12 +110,13 @@ void init_context(const char* title) {
 	setVSync(VSYNC);
 	setMasterVolume(MASTER_VOLUME);
 
-	TILE_SIZE *= SCALE;
+	TILE_SIZE *=  static_cast<float>(SCALE);
 
 	setClearColor(COLORSCHEME[0]);
 
 	button_tex_n = loadTexture("data/art/button_n.png", TEXTURE_PARAM);
 	button_tex_h = loadTexture("data/art/button_h.png", TEXTURE_PARAM);
+	
 	int w;
 	int h;
 	int i = 0;
@@ -140,21 +136,25 @@ Texture getSubImage(unsigned char* pixels, int pixels_width, int x, int y, int w
 	return subimage;
 }
 
-std::vector<std::string> tokenize_str(char* str, char seperator) {
+std::vector<std::string> tokenize_str(const char* endOfSlice,  const char seperator) {
 	std::vector<std::string> result;
+	bool atEndOfString = false;
 	do {
-		char *begin = str;
-		while (*str != seperator && *str) {
-			str++;
+		  const char *beginOfSlice = endOfSlice;
+		 while (*endOfSlice != seperator && *endOfSlice) {
+			endOfSlice += 1;
 		}
-		result.push_back(std::string(begin, str));
-	} while (0 != *str++);
+		result.push_back(std::string(beginOfSlice, endOfSlice));
+		atEndOfString = (*endOfSlice == 0);
+		endOfSlice += 1; //move past current slice for next segment to not include seperator 
+	} while(!atEndOfString);
+
 	return result;
 }
 
-bool is_a_number(char c) {
+bool is_a_number(const char c) {
 	switch (c) {
-	case '0':
+	case '0': 
 	case '1':
 	case '2':
 	case '3':
@@ -172,7 +172,7 @@ bool is_a_number(char c) {
 
 //essentially just a list of possible configuration statements and handling errors
 //pretty much has to be hardcoded
-void process_init_line(std::vector<std::string> tokens, int line_num) {
+void process_init_line(const std::vector<std::string> tokens, const int line_num) {
 	if (tokens[0] == "SOUND") {
 		if (tokens.size() > 2) printf("ERROR IN FILE '%s', line #%i:\tSOUND should only have one argument\n", "data/init.txt", line_num);
 		if (tokens[1] == "YES") SOUND_ON = true;
@@ -334,7 +334,7 @@ void process_init_line(std::vector<std::string> tokens, int line_num) {
 		std::string path = "data/art/";
 		path.append(tokens[1]);
 		BODYFONTPATH = (char*)malloc(path.size() + 1);
-		for (int i = 0; i < path.size(); ++i)
+		for (unsigned int i = 0; i < path.size(); ++i)
 			BODYFONTPATH[i] = path[i];
 		BODYFONTPATH[path.size()] = 0;
 	}
@@ -343,13 +343,13 @@ void process_init_line(std::vector<std::string> tokens, int line_num) {
 		std::string path = "data/art/";
 		path.append(tokens[1]);
 		HEADERFONTPATH = (char*)malloc(path.size() + 1);
-		for (int i = 0; i < path.size(); ++i)
+		for (unsigned int i = 0; i < path.size(); ++i)
 			HEADERFONTPATH[i] = path[i];
 		HEADERFONTPATH[path.size()] = 0;
 	}
 }
 
-std::vector<std::string> decipher_line(char* line, const char* filename, int line_num) {
+std::vector<std::string> decipher_line(char* line, const char* filename, const int line_num) {
 	std::vector<std::string> tokens;
 	remove_characters(line, '\n');
 	remove_characters(line, '\t');
@@ -370,14 +370,14 @@ std::vector<std::string> decipher_line(char* line, const char* filename, int lin
 		else {
 			std::vector<std::string> parameters;
 			char* second_part = (char*)malloc(tokens[1].size() + 1);
-			for (int i = 0; i < tokens[1].size(); ++i)
+			for (unsigned int i = 0; i < tokens[1].size(); ++i)
 				second_part[i] = tokens[1].at(i);
 			second_part[tokens[1].size()] = 0;
 
 			if (character_exists(second_part, ',')) {
 				tokens.pop_back();
 				parameters = tokenize_str(second_part, ',');
-				for (int i = 0; i < parameters.size(); ++i)
+				for (unsigned int i = 0; i < parameters.size(); ++i)
 					tokens.push_back(parameters.at(i));
 			}
 			free(second_part);
@@ -386,7 +386,7 @@ std::vector<std::string> decipher_line(char* line, const char* filename, int lin
 	return tokens;
 }
 
-void remove_characters(char* string, char to_remove) {
+void remove_characters(char* string, const char to_remove) {
 	char* i = string;
 	char* j = string;
 	while (*j != NULL) {
@@ -396,7 +396,7 @@ void remove_characters(char* string, char to_remove) {
 	*i = 0;
 }
 
-void remove_leading_characters(char* string, char to_remove) {
+void remove_leading_characters(char* string,  const char to_remove) {
 	char* i = string;
 	char* j = string;
 	while (*j == to_remove) {
@@ -406,7 +406,7 @@ void remove_leading_characters(char* string, char to_remove) {
 	*i = 0;
 }
 
-bool character_exists(char* string, char to_check) {
+bool character_exists(const char* string, const char to_check) {
 	int len = strlen(string);
 	for (int i = 0; i < len; ++i)
 		if (string[i] == to_check) return true;
