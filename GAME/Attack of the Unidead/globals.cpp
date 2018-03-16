@@ -176,11 +176,11 @@ void printErr(const char const* message, const int line_num) {
 
 #define ERR_ARG(NAME) \
 	if(tokens.size() > 2) { \
-		printErr("NAME should only have one argument\n", line_num); \
+		printErr(#NAME "should only have one argument\n", line_num); \
      } 
 
 #define ERR_INIT_BOOL(NAME) \
-		if(tokens[0] == "NAME"){  \
+		if(tokens[0] == #NAME){  \
 			ERR_ARG(NAME) \
          \
 			if (tokens[1] == "YES") { \
@@ -190,24 +190,24 @@ void printErr(const char const* message, const int line_num) {
 					NAME = false; \
 			} \
 			else { \
-				printErr("NAME can only equal YES or NO\n", line_num); \
+				printErr(#NAME "can only equal YES or NO\n", line_num); \
 			} \
          }
 
 #define ERR_INIT_NUMBER(NAME) \
-			if (tokens[0] == "NAME") { \
+			if (tokens[0] == #NAME) { \
 					ERR_ARG(NAME) \
 					\
 					if (is_a_number(tokens[1].at(0))) { \
 						NAME = stoi(tokens[1]); \
 					} \
 					else { \
-						printErr("NAME must be a whole number\n", line_num); \
+						printErr(#NAME "must be a whole number\n", line_num); \
 					} \
 			} 
 
 #define ERR_INIT_STRING(NAME) \
-		if (tokens[0] == "NAME") { \
+		if (tokens[0] == #NAME) { \
 					ERR_ARG(NAME); \	
 				\
 				std::string path = "data/art/"; \
