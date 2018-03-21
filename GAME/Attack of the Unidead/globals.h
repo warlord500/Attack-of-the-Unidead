@@ -1,7 +1,8 @@
 #pragma once
 #include <texture.h>
-#include <vec4f.h>
+#include <maths.h>
 #include <bahamut.h>
+#include <render2D.h>
 #include <vector>
 #include <random>
 //just for clarity. It should be immediately obvious these are globals and you should be VERY careful with them
@@ -28,7 +29,7 @@ global_var int TILE_SIZE;
 
 //colors for the colorscheme. Loaded from a file and should be treated as const after that point.
 global_const int MAX_COLORS = 16;
-global_var vec4f COLORSCHEME[MAX_COLORS];
+global_var vec4 COLORSCHEME[MAX_COLORS];
 
 global_const int SCROLL_SPEED = 5;
 global_const int PLAYER = 0;

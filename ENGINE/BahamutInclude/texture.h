@@ -29,9 +29,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <GL/glew.h>
 #include <vector>
-#include "rectangle.h"
 #include "defines.h"
 
 const int FLIP_HORIZONTAL = 1;
@@ -39,22 +37,33 @@ const int FLIP_VERTICAL = 2;
 
 struct Texture {
 	GLuint ID;
+	u64 flip_flag;
+	i32 width;
+	i32 height;
+};
+
+Texture create_blank_texture(u32 width = 0, u32 height = 0);
+Texture load_texture(unsigned char* pixels, u32 width, u32 height, u16 param);
+Texture load_texture(const char* filepath, u16 param);
+void dispose_texture(Texture& texture);
+
+void blit_texture(Texture src, Texture dest, Rect drawFrom, Rect drawTo);
+
+void set_texture_pixels(Texture texture, unsigned char* pixels, u32 width, u32 height);
+void set_texture_pixels_from_file(Texture texture, const char* filepath);
+
+void bind_texture(Texture texture, u32 slot);
+void unbind_texture(u32 slot);
+
+struct RenderTexture {
+	GLuint framebufferID;
+	GLuint textureID;
 	unsigned long flip_flag;
 	int width;
 	int height;
 };
 
-Texture createBlankTexture(u32 width = 0, u32 height = 0);
-Texture loadTexture(unsigned char* pixels, u32 width, u32 height, u16 param);
-Texture loadTexture(const char* filepath, u16 param);
-void disposeTexture(Texture& texture);
-
-void blitTexture(Texture& src, Texture& dest, Rect drawFrom, Rect drawTo);
-
-void setTexturePixels(Texture& texture, unsigned char* pixels, u32 width, u32 height);
-void setTexturePixelsFromFile(Texture& texture, const char* filepath);
-
-void bindTexture(Texture& texture, u32 slot);
-void unbindTexture(u32 slot);
+void create_render_texture(int width, int height);
+void create_render_texture(Texture base);
 
 #endif

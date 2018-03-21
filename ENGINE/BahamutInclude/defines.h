@@ -34,12 +34,12 @@
 #define GLOBAL   extern
 #define MAX_FORMAT_TEXT_SIZE 128
 
-#define BMT_STRINGIFY(x) #x
-#define BMT_STRING_JOIN(str1, str2) str1 ## str2
+#define BMT_TO_STRING(x) #x
+#define BMT_STRING_APPEND(str1, str2) str1 ## str2
 
 #define BMT_MAX(a,b) ((a) < (b) ? (a) : (b))
 #define BMT_MIN(a,b) ((a) < (b) ? (b) : (a))
-#define BMT_CLAMP(i,v,x) (BMT_MAX(BMT_MIN(v,x), i))
+#define BMT_CLAMP(i,a,b) (BMT_MAX(BMT_MIN(a,b), i))
 
 #include <stdint.h>
 #define i8 int8_t
@@ -50,6 +50,13 @@
 #define u32 uint32_t
 #define i64 int64_t
 #define u64 uint64_t
+#include <float.h>
+#define real32 float
+#define real64 double
+#define f32 float
+#define f64 double
+#include <stddef.h>
+#define b32 int32_t
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -61,9 +68,9 @@
 #define WARNING 3
 #define DEBUG 4
 
-//TODO: have this saved to file too (possibly only while in debug mode)
+//TODO: have log saved to file too (possibly only while in debug mode)
 INTERNAL
-void BMT_LOG(u8 TYPE, const char* format, ...) {
+inline void BMT_LOG(u8 TYPE, const char* format, ...) {
 	switch (TYPE) {
 	case FATAL_ERROR: fprintf(stderr, "FATAL ERROR: "); break;
 	case MINOR_ERROR: fprintf(stderr, "ERROR: ");       break;
@@ -89,7 +96,7 @@ void BMT_LOG(u8 TYPE, const char* format, ...) {
 #endif
 
 INTERNAL
-char *duplicateString(const char *s) {
+inline char *duplicate_string(const char *s) {
 	char *d = (char*)malloc(strlen(s) + 1);
 	if (d == NULL) return NULL;
 	strcpy(d, s);
@@ -97,9 +104,9 @@ char *duplicateString(const char *s) {
 }
 
 INTERNAL
-char** splitString(const char* string, const char* seperator, u32* numTokens) {
+inline char** split_string(const char* string, const char* seperator, u32* numTokens) {
 	char** tokens;
-	char* s = duplicateString(string);
+	char* s = duplicate_string(string);
 
 	u32 tokens_allocated = 1;
 	u32 tokens_used = 0;
@@ -111,7 +118,7 @@ char** splitString(const char* string, const char* seperator, u32* numTokens) {
 			tokens_allocated *= 2;
 			tokens = (char**)realloc(tokens, tokens_allocated * sizeof(char*));
 		}
-		tokens[tokens_used++] = duplicateString(token);
+		tokens[tokens_used++] = duplicate_string(token);
 	}
 	if (tokens_used == 0) {
 		free(tokens);
@@ -125,6 +132,111 @@ char** splitString(const char* string, const char* seperator, u32* numTokens) {
 	return tokens;
 }
 
+INTERNAL
+inline bool has_extension(const char* filename, const char* extension) {
+	u32 numTokens = 0;
+	char** tokens;
+	tokens = split_string(filename, ".", &numTokens);
+	bool answer = strcmp(tokens[numTokens - 1], extension) == 0;
+
+	for (u8 i = 0; i < numTokens; ++i)
+		if (tokens[i] != NULL)
+			free(tokens[i]);
+	if (tokens != NULL)
+		free(tokens);
+
+	return answer;
+}
+
+INTERNAL
+void inline swap(int& a, int& b) {
+	int c = b;
+	b = a;
+	a = c;
+}
+
+INTERNAL
+inline double getDistanceM(f32 x1, f32 y1, f32 x2, f32 y2) {
+	double dx = std::abs(x1 - x2);
+	double dy = std::abs(y1 - y2);
+	return BMT_MAX(dx, dy);
+}
+
+INTERNAL
+inline double getDistanceE(f32 x1, f32 y1, f32 x2, f32 y2) {
+	double dx = x1 - x2;
+	double dy = y1 - y2;
+	return std::abs(sqrt(dx * dx + dy * dy));
+}
+
+template <class T>
+void clamp(T& input, T min, T max) {
+	if (input > max) input = max;
+	if (input < min) input = min;
+}
+
+template <class T>
+T roundUp(T numToRound, T multiple) {
+	if (multiple == 0)
+		return numToRound;
+
+	int remainder = abs(numToRound) % multiple;
+	if (remainder == 0)
+		return numToRound;
+
+	if (numToRound < 0)
+		return -(abs(numToRound) - remainder);
+	else
+		return numToRound + multiple - remainder;
+}
+
+struct Rect {
+	float x;
+	float y;
+	float width;
+	float height;
+};
+
+INTERNAL
+inline Rect rect(float x, float y, float width, float height) {
+	Rect r;
+	r.x = x;
+	r.y = y;
+	r.width = width;
+	r.height = height;
+	return r;
+}
+
+INTERNAL
+inline bool colliding(Rect first, Rect second) {
+	if (first.x + first.width >= second.x && first.x <= second.x + second.width) {
+		if (first.y <= second.y + second.height && first.y + first.height >= second.y) {
+			return true;
+		}
+	}
+	return false;
+}
+
+INTERNAL
+inline bool colliding(Rect rect, float x, float y, float width, float height) {
+	if (rect.x + rect.width >= x && rect.x <= x + width) {
+		if (rect.y <= y + height && rect.y + rect.height >= y) {
+			return true;
+		}
+	}
+	return false;
+}
+
+INTERNAL
+inline bool colliding(Rect rect, f32 x, f32 y) {
+	if (rect.x + rect.width >= x && rect.x <= x + 1) {
+		if (rect.y <= y + 1 && rect.y + rect.height >= y) {
+			return true;
+		}
+	}
+	return false;
+}
+
 #ifndef BMT_ASSERT
 #include <assert.h>
 #define BMT_ASSERT(expr) assert(expr)
@@ -132,6 +244,23 @@ char** splitString(const char* string, const char* seperator, u32* numTokens) {
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+INTERNAL
+inline GLchar* read_file(const GLchar* filename) {
+	FILE* file = fopen(filename, "rt");
+	fseek(file, 0, SEEK_END);
+	unsigned long length = ftell(file);
+	GLchar* data = new GLchar[length + 1];
+	memset(data, 0, length + 1);
+	fseek(file, 0, SEEK_SET);
+	fread(data, 1, length, file);
+	fclose(file);
+
+	return data;
+}
+
+//Altered GLFW3 #defines to remove the GLFW_ and make it less verbose to type.
+//Original written by Marcus Geelnard and Camilla Berglund
+
 #define RELEASE                0
 
 #define PRESS                  1

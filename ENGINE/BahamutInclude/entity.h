@@ -31,13 +31,27 @@
 
 #include <unordered_map>
 #include <memory>
-#include "component.h"
 #include "defines.h"
+
+//================================================
+//Description: An abstract component class for 
+//	entities. Components will be sorted in a map
+//	by their type. So an entity can only have
+//	one component of any given type.
+//
+//Comments: All components are pure data. Systems
+//	will take the data stored in Entities and
+//	do something with them, assuming the Entity
+//	has all the required components.
+//================================================
+struct Component {
+
+};
 
 class Entity {
 public:
 	template<class T, class... TArgs>
-	T* addComp(TArgs&&... mArgs) {
+	T* add_comp(TArgs&&... mArgs) {
 		if (getComp<T>() == NULL) {
 			auto result(new T(std::forward<TArgs>(mArgs)...));
 
@@ -52,7 +66,7 @@ public:
 	}
 
 	template<class T>
-	T* getComp() {
+	T* get_comp() {
 		try {
 			return static_cast<T*>(_components.at(&typeid(T)).get());
 		}
@@ -63,7 +77,7 @@ public:
 	}
 
 	template<class T>
-	void removeComp() {
+	void remove_comp() {
 		try {
 			_components.at(&typeid(T)).release();
 			_components.erase(&typeid(T));

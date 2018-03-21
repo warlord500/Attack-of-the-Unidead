@@ -29,46 +29,50 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "image.h"
 #include "defines.h"
+#include "maths.h"
 
 struct Shader {
-	GLuint programID;
+	GLuint ID;
 	GLuint vertexshaderID;
 	GLuint fragshaderID;
+
+	GLuint vertexLoc;
+	GLuint texcoordLoc;
+	GLuint normalLoc;
+	GLuint colorLoc;
+
+	GLuint modelMatrixLoc;
+	GLuint diffuseColorLoc;
+	GLuint specularColorLoc;
+	GLuint ambientColorLoc;
+
+	GLuint mapTextureLoc0;
 };
 
-struct Shader2D : public Shader {
-	void(*prepareRenderCallback)(Texture& image);
-};
+Shader load_shader(const GLchar* vertexfile, const GLchar* fragmentfile);
+Shader load_shader_from_strings(const GLchar* vertexstring, const GLchar* fragmentstring);
+GLuint load_shader_file(const GLchar* path, GLuint type);
+GLuint load_shader_string(const GLchar* string, GLuint type);
+GLint get_uniform_location(Shader* shader, const GLchar* name);
+//============================================||
+// ---------UNIFORM VARIABLE LOADING--------- ||
+//============================================||
+void load_float(Shader* shader, const GLchar* name, GLfloat value);
+void load_float_array(Shader* shader, const GLchar* name, GLfloat arr[], int count);
+void load_int(Shader* shader, const GLchar* name, GLint value);
+void load_int_array(Shader* shader, const GLchar* name, GLint arr[], int count);
+void load_vec2(Shader* shader, const GLchar* name, vec2 vec);
+void load_vec3(Shader* shader, const GLchar* name, vec3 vec);
+void load_vec4(Shader* shader, const GLchar* name, vec4 vec);
+void load_bool(Shader* shader, const GLchar* name, bool value);
+void load_mat4(Shader* shader, const GLchar* name, mat4 mat);
+//============================================||
+// ---------UNIFORM VARIABLE LOADING--------- ||
+//============================================||
+void start_shader(Shader* shader);
+void stop_shader();
 
-struct Shader3D : public Shader {
-	//void(*prepareRenderCallback)(Model& image);
-};
-
-Shader loadShader(const GLchar* vertexfile, const GLchar* fragmentfile);
-Shader loadShaderFromStrings(const GLchar* vertexstring, const GLchar* fragmentstring);
-GLuint loadShaderFile(const GLchar* path, GLuint type);
-GLuint loadShaderString(const GLchar* string, GLuint type);
-GLint getUniformLocation(Shader* shader, const GLchar* name);
-//============================================||
-//			    	---------UNIFORM VARIABLE LOADING-----------				 ||
-//============================================||
-void loadFloat(Shader* shader, const GLchar* name, GLfloat value);
-void loadFloatArray(Shader* shader, const GLchar* name, GLfloat arr[], int count);
-void loadInt(Shader* shader, const GLchar* name, GLint value);
-void loadIntArray(Shader* shader, const GLchar* name, GLint arr[], int count);
-void loadVec2f(Shader* shader, const GLchar* name, vec2f vec);
-void loadVec3f(Shader* shader, const GLchar* name, vec3f vec);
-void loadVec4f(Shader* shader, const GLchar* name, vec4f vec);
-void loadBool(Shader* shader, const GLchar* name, bool value);
-void loadMat4f(Shader* shader, const GLchar* name, mat4f mat);
-//============================================||
-//				---------UNIFORM VARIABLE LOADING-----------					 ||
-//============================================||
-void startShader(Shader* shader);
-void stopShader();
-
-void disposeShader(Shader shader);
+void dispose_shader(Shader shader);
 
 #endif

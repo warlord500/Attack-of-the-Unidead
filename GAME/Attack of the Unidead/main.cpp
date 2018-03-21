@@ -1,6 +1,5 @@
 ﻿#include "globals.h"
 #include <bahamut.h>
-#include <state.h>
 #include <audio.h>
 #include <iostream>
 
@@ -20,26 +19,26 @@ int main() {
 	init_globals();
 	init_context("Attack of the Unidead");
 
-	setStretchMode(STRETCH_VIEWPORT);
-	setAspectMode (ASPECT_KEEP);
+	set_stretch_mode(STRETCH_VIEWPORT);
+	set_aspect_mode(ASPECT_KEEP);
 
-	setMouseHidden(true);
-	Texture cursor = loadTexture("data/art/cursor.png",   TEXTURE_PARAM);
+	set_mouse_hidden(true);
+	Texture cursor = load_texture("data/art/cursor.png",   TEXTURE_PARAM);
 
 	Menu menu;
 	menu.xPos = 260;
 	menu.yPos = 90;
 	menu.width = 3;
 	
-	while (!isWindowClosed()) {
-		vec2f mouse_pos = getMousePos();
+	while (!is_window_closed()) {
+		vec2 mouse_pos = get_mouse_pos();
 
-		beginDrawing();
+		begin_drawing();
 		begin2D();
 
 		//TEXT DEMONSTRATION
-		drawText(HEADER_FONT, "Hello World!", 100, 100);
-		drawText(BODY_FONT, "This is a test!", 100, 120);
+		draw_text(HEADER_FONT, "Hello World!", 100, 100);
+		draw_text(BODY_FONT, "This is a test!", 100, 120);
 
 		//MENU DEMONSTRATION
 		menu.row(3);
@@ -55,13 +54,12 @@ int main() {
 			printf("Button Three has been pressed!\n");
 		}
 
-		drawTexture(cursor, mouse_pos.x, mouse_pos.y);
+		draw_texture(cursor, mouse_pos.x, mouse_pos.y);
 
 		end2D();
-
-		endDrawing();
+		end_drawing();
 	}
-	disposeTexture(cursor);
-	disposeWindow();
+	dispose_texture(cursor);
+	dispose_window();
 	return 0;
 }

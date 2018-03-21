@@ -26,7 +26,7 @@ Font BODY_FONT;
 
 int TILE_SIZE = 32;
 float SCALE = 1.0f;
-vec4f COLORSCHEME[16];
+vec4 COLORSCHEME[16];
 
 //textures
 Texture button_tex_n;
@@ -76,7 +76,7 @@ void init_globals() {
 			std::vector<std::string> split = tokenize_str(tokens[0].c_str(), '_');
 
 			if (split[0] == "COLOR") {
-				COLORSCHEME[stoi(split[1]) - 1] = vec4f(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3]), 255.0f);
+				COLORSCHEME[stoi(split[1]) - 1] = V4(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3]), 255.0f);
 			}
 			else {
 				printf("ERROR: There is an entry in data/colorscheme.txt not related to colors. Did you mispell COLOR or is this in the wrong file?\n");
@@ -105,13 +105,14 @@ void init_globals() {
 }
 
 void init_context(const char* title) {
-	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, title, FULLSCREEN, RESIZABLE, PRIMARY_MONITOR);
+	init_window(WINDOW_WIDTH, WINDOW_HEIGHT, title, FULLSCREEN, RESIZABLE, PRIMARY_MONITOR);
+	//init_audio();
 
 	printf("Loading font into VRAM...\n");
 	
 	const char const*  msg = "%s was not loaded correctly. The file (%s) is not valid.\n";
 	#define LOAD_FONT(NAME) {\
-			 NAME = loadFont(NAME ## _PATH, NAME ## _SIZE); \
+			 NAME = load_font(NAME ## _PATH, NAME ## _SIZE); \
 			 if (NAME.characters[0] == NULL) printf(msg, #NAME, NAME ## _PATH); \
 			 free(NAME ## _PATH); \
 		}
@@ -120,16 +121,16 @@ void init_context(const char* title) {
 	LOAD_FONT(HEADER_FONT);
 	#undef LOAD_FONT
 
-	setFPSCap(FPS_CAP);
-	setVSync(VSYNC);
-	setMasterVolume(MASTER_VOLUME);
+	set_FPS_cap(FPS_CAP);
+	set_vsync(VSYNC);
+	set_master_volume(MASTER_VOLUME);
 
 	TILE_SIZE *=  static_cast<float>(SCALE);
 
-	setClearColor(COLORSCHEME[0]);
+	set_clear_color(COLORSCHEME[0]);
 
-	button_tex_n = loadTexture("data/art/button_n.png", TEXTURE_PARAM);
-	button_tex_h = loadTexture("data/art/button_h.png", TEXTURE_PARAM);
+	button_tex_n = load_texture("data/art/button_n.png", TEXTURE_PARAM);
+	button_tex_h = load_texture("data/art/button_h.png", TEXTURE_PARAM);
 	
 	int w;
 	int h;
@@ -145,7 +146,7 @@ Texture getSubImage(unsigned char* pixels, int pixels_width, int x, int y, int w
 	Texture subimage;
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, pixels_width);
 	unsigned char* subimage_pixels = pixels + (x + y * pixels_width) * 4;
-	subimage = loadTexture(subimage_pixels, width, height, TEXTURE_PARAM);
+	subimage = load_texture(subimage_pixels, width, height, TEXTURE_PARAM);
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 	return subimage;
 }
@@ -219,7 +220,6 @@ bool is_a_number(const char c) {
 //something is wrong for the code above but i dont know what it is yet!
 				
 
-		
 //essentially just a list of possible configuration statements and handling errors
 //pretty much has to be hardcoded
 void process_init_line(const std::vector<std::string> tokens, const int line_num) {
