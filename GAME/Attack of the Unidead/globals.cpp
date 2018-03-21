@@ -2,6 +2,7 @@
 #include <cstdarg>
 #include <SOIL.h>
 #include <string>
+#include <cctype>
 #include <random>
 #include <iostream>
 #include <time.h>
@@ -39,7 +40,7 @@ INTERNAL int BODY_FONT_SIZE;
 INTERNAL int HEADER_FONT_SIZE;
 INTERNAL char* BODY_FONT_PATH;
 INTERNAL char* HEADER_FONT_PATH;
-const char const* ART_DIRECTORY = "data/art/";
+const char * ART_DIRECTORY = "data/art/";
 
 INTERNAL int FPS_CAP = 100;
 INTERNAL int WINDOW_WIDTH = 800;
@@ -72,14 +73,18 @@ void init_globals() {
 		if (buffer[0] == 0) break;
 		std::vector<std::string> tokens = decipher_line(buffer, "data/colorscheme.txt", i);
 
-		if (tokens.size() > 0) {
+		if (tokens.size() >= 4) {
 			std::vector<std::string> split = tokenize_str(tokens[0].c_str(), '_');
-
-			if (split[0] == "COLOR") {
-				COLORSCHEME[stoi(split[1]) - 1] = vec4f(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3]), 255.0f);
+			if (split.size() < 2) {
+				printErr("need more tokens for colorscheme", 0);
 			}
 			else {
-				printf("ERROR: There is an entry in data/colorscheme.txt not related to colors. Did you mispell COLOR or is this in the wrong file?\n");
+				if (split[0] == "COLOR") {
+					COLORSCHEME[stoi(split[1]) - 1] = vec4f(stoi(tokens[1]), stoi(tokens[2]), stoi(tokens[3]), 255.0f);
+				}
+				else {
+					printf("ERROR: There is an entry in data/colorscheme.txt not related to colors. Did you mispell COLOR or is this in the wrong file?\n");
+				}
 			}
 		}
 	}
@@ -109,7 +114,7 @@ void init_context(const char* title) {
 
 	printf("Loading font into VRAM...\n");
 	
-	const char const*  msg = "%s was not loaded correctly. The file (%s) is not valid.\n";
+	const char*  msg = "%s was not loaded correctly. The file (%s) is not valid.\n";
 	#define LOAD_FONT(NAME) {\
 			 NAME = loadFont(NAME ## _PATH, NAME ## _SIZE); \
 			 if (NAME.characters[0] == NULL) printf(msg, #NAME, NAME ## _PATH); \
@@ -166,10 +171,6 @@ std::vector<std::string> tokenize_str(const char* endOfSlice,  const char sepera
 	return result;
 }
 
-bool is_a_number(const char c) {
-	return c > '0' && c < '9';
-}
-
 #define ERR_ARG(NAME) \
 	if(tokens.size() > 2) { \
 		printErr(#NAME "should only have one argument\n", line_num); \
@@ -195,7 +196,7 @@ bool is_a_number(const char c) {
 			if (tokens[0] == #NAME) { \
 					ERR_ARG(NAME) \
 					\
-					if (is_a_number(tokens[1].at(0))) { \
+					if (isdigit(tokens[1].at(0))) { \
 						NAME = stoi(tokens[1]); \
 					} \
 					else { \
@@ -260,9 +261,6 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 	ERR_INIT_STRING(BODY_FONT_PATH);
 	ERR_INIT_STRING(HEADER_FONT_PATH);
 #undef ERR_INIT_STRING
-
-
-
 	//at this point we have an invalid data field. 
 	printf("ERROR in file 'data/init.txt' on line %i, DATA FIELD IS UNKNOWN\n",line_num);
 }
@@ -277,32 +275,33 @@ std::vector<std::string> decipher_line(char* line, const char* filename, const i
 		remove_characters(line, '(');
 		remove_characters(line, ')');
 		tokens = tokenize_str(line, '=');
-		if (tokens[0].empty()) {
-			if (tokens.size() > 1)
+		if (tokens.size() < 1) {
+			printErr("must have something in thats not equals in paranthesis",line_num);
+		}
+		else if (tokens[0].empty()) {
+			if (tokens.size() > 1) {
 				printErr("No identifier in parenthesis.", line_num);
-			else
-				printErr("Empty parenthesis!", line_num);
-		}
-		else if (tokens.size() == 1) return tokens; //only 1 is fine, it's a flag if there is only one. (If there was SUPPOSED to be an = sign
-													//then that will be discovered later and an error presented then.)
-		else if (tokens.size() > 2) printErr("Multiple '=' present inside parenthesis.", line_num);
-		else {
-			std::vector<std::string> parameters;
-			char* second_part = (char*)malloc(tokens[1].size() + 1);
-			for (unsigned int i = 0; i < tokens[1].size(); ++i)
-				second_part[i] = tokens[1].at(i);
-			second_part[tokens[1].size()] = 0;
-
-			if (character_exists(second_part, ',')) {
-				tokens.pop_back();
-				parameters = tokenize_str(second_part, ',');
-				for (unsigned int i = 0; i < parameters.size(); ++i)
-					tokens.push_back(parameters.at(i));
 			}
-			free(second_part);
+			else {
+				printErr("Empty parenthesis!", line_num);
+			}
 		}
+		else if (tokens.size() == 1) {
+			return tokens; //only 1 is fine, it's a flag if there is only one. (If there was SUPPOSED to be an = sign
+								//then that will be discovered later and an error presented then.)
+		}
+		else if (tokens.size() > 2) {
+			printErr("Multiple '=' present inside parenthesis.", line_num);
+		}
+		else if (tokens[1].find(',') != std::string::npos) {
+			const auto parameters = tokenize_str(tokens[1].c_str(), ',');
+			tokens.pop_back();
+			//push parameters on tokens
+			tokens.reserve(tokens.size() + parameters.size());
+			tokens.insert(tokens.end(), parameters.begin(), parameters.end());
+		}
+		return tokens;
 	}
-	return tokens;
 }
 
 void remove_characters(char* string, const char to_remove) {
@@ -315,7 +314,7 @@ void remove_characters(char* string, const char to_remove) {
 	*i = 0;
 }
 
-void remove_leading_characters(char* string,  const char to_remove) {
+void remove_leading_characters(char* string, const char to_remove) {
 	char* i = string;
 	char* j = string;
 	while (*j == to_remove) {
@@ -323,43 +322,4 @@ void remove_leading_characters(char* string,  const char to_remove) {
 		if (*i != to_remove) i++;
 	}
 	*i = 0;
-}
-
-bool character_exists(const char* string, const char to_check) {
-	int len = strlen(string);
-	for (int i = 0; i < len; ++i)
-		if (string[i] == to_check) return true;
-	return false;
-}
-
-//TODO: Make this work.
-void message(char* message) {
-	char* ptr = message;
-	//loop until null termination
-	while (*ptr != 0) {
-		if (*ptr == '%') {
-			//handle formats like printf does
-		}
-		//[C#] sample text [/C#] will draw 'sample text' with a color in the colorscheme 
-		//(replace # with a num, that is the index of colorscheme that will be used)
-		if (*ptr == '[') {
-			ptr++;
-			if (*ptr == 'C') {
-				ptr++;
-				if (is_a_number(*ptr)) {
-					//vec4f color = color_scheme[stoi(*ptr)];
-					//drawTexture(draw with color);
-				}
-				ptr++;
-				ptr++;
-			}
-			else {
-				//if there is no 'C' after the bracket then it is a normal bracket. Print the bracket in the message as normal
-				//drawTexture('[');
-			}
-		}
-	}
-	//drawTexture();
-
-	ptr++;
 }
