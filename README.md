@@ -4,14 +4,22 @@ This is a group project by the students of the Computer Science department at CC
 ## Code Style Guide
 
 Function are formatted like this: 
-```example_function(int exampleParameter);```
+```
+example_function(int exampleParameter);
+```
 Types (structs and classes) are formatted like this: 
-```struct TestStruct { };```
+```
+struct TestStruct { };
+```
 Variables are formatted like this: 
-```TestStruct testVariableName;```
+```
+TestStruct testVariableName;
+```
 Globals and macros are formatted like this: 
-```#define TEST_MACRO(x) #x``` 
-```global_var TEST_GLOBAL_VAR;```
+```
+#define TEST_MACRO(x) #x
+global_var TEST_GLOBAL_VAR;
+```
 
 ## Linking the library into Visual Studio
 
