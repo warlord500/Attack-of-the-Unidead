@@ -1,6 +1,13 @@
 # Attack of the Unidead
 This is a group project by the students of the Computer Science department at CCC. A roguelike dungeon-crawler with a nonsense and absurd theme.
 
+## Code Style Guide
+
+Function are formatted like this: ```example_function(int exampleParameter);```
+Types (structs and classes) are formatted like this: ```struct TestStruct { };```
+Variables are formatted like this: ```TestStruct testVariableName;```
+Globals and macros are formatted like this: ```#define TEST_MACRO(x) #x``` ```global_var TEST_GLOBAL_VAR;```
+
 ## Linking the library into Visual Studio
 
 > If you aren't using Visual Studio 2017, this may not work. Upgrading to Visual Studio 2017 is highly recommended. Any 'p1' and 'p2' mismatch is likely due to having a wrong Visual Studio version. I could also recompile the engine on a different VS version if that is preferable.
