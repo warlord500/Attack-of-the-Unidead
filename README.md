@@ -5,7 +5,7 @@ This is a group project by the students of the Computer Science department at CC
 
 Function are formatted like this: 
 ```
-example_function(int exampleParameter);
+void example_function(int exampleParameter);
 ```
 Types (structs and classes) are formatted like this: 
 ```
