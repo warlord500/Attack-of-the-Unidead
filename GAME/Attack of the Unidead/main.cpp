@@ -76,7 +76,7 @@ uiStateResult mainMenu(Texture& cursor) {
 	menu.xPos = 260;
 	menu.yPos = 90;
 	menu.width = 6;
-	//loaded custom textures here!
+	uiStateResult res = uiStateResult::exitAndClose;
 	while (!is_window_closed()) {
 		vec2 mousePos = get_mouse_pos();
 
@@ -87,7 +87,6 @@ uiStateResult mainMenu(Texture& cursor) {
 		menu.row(4);
 		menu.background();
 		menu.title("Main Menu!");
-
 		if (menu.push_button("start game")) {
 			//return uiStateResult::startGame;
 		}
@@ -98,7 +97,8 @@ uiStateResult mainMenu(Texture& cursor) {
 			//return uiStateResult::mapEditor;
 		}
 		if (menu.push_button("close game")) {
-			return uiStateResult::exitAndClose;
+			res = uiStateResult::exitAndClose;
+			break;
 		}
 		draw_texture(cursor, mousePos.x, mousePos.y);
 
@@ -107,5 +107,5 @@ uiStateResult mainMenu(Texture& cursor) {
 	}
 
 	//at this point we are ending the program!
-	return uiStateResult::exitAndClose;
+	return res;
 }
