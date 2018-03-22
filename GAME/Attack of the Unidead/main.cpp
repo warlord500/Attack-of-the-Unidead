@@ -76,14 +76,13 @@ uiStateResult mainMenu(Texture& cursor) {
 	menu.xPos = 260;
 	menu.yPos = 90;
 	menu.width = 6;
-	
+	//loaded custom textures here!
 	while (!is_window_closed()) {
 		vec2 mousePos = get_mouse_pos();
 
 		begin_drawing();
 		begin2D();
 
-		
 		//Main menu! 
 		menu.row(4);
 		menu.background();
@@ -99,7 +98,7 @@ uiStateResult mainMenu(Texture& cursor) {
 			//return uiStateResult::mapEditor;
 		}
 		if (menu.push_button("close game")) {
-			//return uiStateResult::mapEditor;
+			return uiStateResult::exitAndClose;
 		}
 		draw_texture(cursor, mousePos.x, mousePos.y);
 
