@@ -14,6 +14,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "gui.h"
+#include "states.h"
+#include "MapEditor.h"
 
 int main() {
 	init_globals();
@@ -29,13 +31,19 @@ int main() {
 	menu.xPos = 260;
 	menu.yPos = 90;
 	menu.width = 3;
+
+	add_state(new MapEditor(), "mapEditor");
+	set_state("mapEditor");
 	
 	while (!is_window_closed()) {
-		vec2 mouse_pos = get_mouse_pos();
+		vec2 mousePos = get_mouse_pos();
 
 		begin_drawing();
 		begin2D();
 
+		update_current_state();
+
+		/*
 		//TEXT DEMONSTRATION
 		draw_text(HEADER_FONT, "Hello World!", 100, 100);
 		draw_text(BODY_FONT, "This is a test!", 100, 120);
@@ -53,8 +61,9 @@ int main() {
 		if (menu.push_button("Button Three")) {
 			printf("Button Three has been pressed!\n");
 		}
+		*/
 
-		draw_texture(cursor, mouse_pos.x, mouse_pos.y);
+		draw_texture(cursor, mousePos.x, mousePos.y);
 
 		end2D();
 		end_drawing();

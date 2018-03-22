@@ -130,13 +130,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="components.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="level.h" />
+    <ClInclude Include="MapEditor.h" />
+    <ClInclude Include="states.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="states.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

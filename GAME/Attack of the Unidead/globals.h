@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
 #include <texture.h>
 #include <maths.h>
 #include <bahamut.h>
@@ -73,3 +75,5 @@ namespace {
 		return dist(mt) + min;
 	}
 }
+
+#endif
