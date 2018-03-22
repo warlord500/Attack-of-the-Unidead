@@ -236,6 +236,7 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 		else {
 			printErr("TEXTURE_PARAMETER must be NEAREST or LINEAR", line_num);
 		}
+                return;
 	}
 
 	ERR_INIT_BOOL(PRIMARY_MONITOR);
@@ -264,7 +265,7 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 
 
 	//at this point we have an invalid data field. 
-	printf("ERROR in file 'data/init.txt' on line %i, DATA FIELD IS UNKNOWN\n",line_num);
+	printf("ERROR in file 'data/init.txt' on line %i, DATA FIELD, \"%s\" IS UNKNOWN\n",line_num,tokens[0].c_str());
 }
 
 
