@@ -2,7 +2,7 @@
 #include <font.h>
 
 INTERNAL
-bool draw_text_button(const char* text, u32 text_width, u16 xPos, u16 yPos) {
+bool draw_text_button(const char* text,const u32 text_width, const u16 xPos,const u16 yPos) {
 	Rect button = rect(xPos, yPos, button_tex_n.width, button_tex_n.height);
 	vec2 mouse_pos = get_mouse_pos();
 	if (colliding(button, mouse_pos.x, mouse_pos.y)) {
@@ -46,7 +46,7 @@ void Menu::background() {
 	}
 }
 
-void Menu::row(u16 num_columns) {
+void Menu::row(const u16 num_columns) {
 	assert(num_columns > 0);
 	height = num_columns;
 	curr_x = xPos;
@@ -61,7 +61,8 @@ bool Menu::push_button(const char* text) {
 		button_tex_h.width = text_width + 25;
 	}
 
-	bool pushed = draw_text_button(text, text_width, xPos + (((width+1) * menu_tex[0].width) / 2) - (button_tex_n.width / 2), curr_y);
+	const bool pushed = draw_text_button(text, 
+				text_width, xPos + (((width+1) * menu_tex[0].width) / 2) - (button_tex_n.width / 2), curr_y);
 	curr_y += button_tex_n.height * 1.5f;
 
 	button_tex_n.width = start_width;
@@ -69,7 +70,7 @@ bool Menu::push_button(const char* text) {
 	return pushed;
 }
 
-void Menu::title(const char* title) {
+void Menu::title(const char* const title) {
 	u32 title_width = get_string_width(HEADER_FONT, title);
 	draw_text(HEADER_FONT, title, xPos + (((width+1)*menu_tex[0].width) / 2) - (title_width / 2),
 		yPos + (menu_tex[0].width / 2) - (HEADER_FONT.characters['T']->texture.height),
@@ -77,7 +78,7 @@ void Menu::title(const char* title) {
 	);
 }
 
-void Splash::begin(Texture* tex_ptr, double fade_speed) {
+void Splash::begin(Texture* const tex_ptr,  const double fade_speed) {
 	this->fade_speed = fade_speed;
 	this->tex_ptr = tex_ptr;
 	alpha = 1;

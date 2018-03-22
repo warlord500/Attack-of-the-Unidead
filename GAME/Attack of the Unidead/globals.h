@@ -44,13 +44,11 @@ global_var Texture menu_tex[9];
 void init_globals();
 void init_context(const char* title);
 
-std::vector<std::string> decipher_line(char* line, const char* filename, int line_num);
+//std::vector<std::string> decipher_line(char* line, const char* filename, int line_num);
 std::vector<std::string> tokenize_str(const char* string, char seperator);
-bool is_a_number(char c);
+
 void remove_characters(char* string, char to_remove);
 void remove_leading_characters(char* string, char to_remove);
-bool character_exists(const char* string, char to_check);
-
 Texture getSubImage(unsigned char* pixels, int pixels_width, int x, int y, int width, int height);
 
 namespace {
