@@ -3,8 +3,8 @@
 
 INTERNAL
 bool draw_text_button(const char* text,const u32 text_width, const u16 xPos,const u16 yPos) {
-	Rect button = rect(xPos, yPos, button_tex_n.width, button_tex_n.height);
-	vec2 mouse_pos = get_mouse_pos();
+	const Rect button = rect(xPos, yPos, button_tex_n.width, button_tex_n.height);
+	const vec2 mouse_pos = get_mouse_pos();
 	if (colliding(button, mouse_pos.x, mouse_pos.y)) {
 		draw_texture(button_tex_h, xPos, yPos);
 		if (is_button_released(MOUSE_BUTTON_LEFT)) {

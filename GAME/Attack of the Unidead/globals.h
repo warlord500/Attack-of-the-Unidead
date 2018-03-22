@@ -61,7 +61,7 @@ namespace {
 	//Description: Generates a random integer from 0
 	//	to a value.
 	//================================================
-	int inline randomInt(int exclusiveMax) {
+	int inline randomInt(const int exclusiveMax) {
 		std::uniform_int_distribution<> dist(0, exclusiveMax - 1);
 		return dist(mt);
 	}
@@ -70,7 +70,7 @@ namespace {
 	//Description: Generates a random integer between
 	//	two values.
 	//================================================
-	int inline randomInt(int min, int max) {
+	int inline randomInt(const int min, const int max) {
 		std::uniform_int_distribution<> dist(0, max - min);
 		return dist(mt) + min;
 	}

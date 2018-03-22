@@ -17,23 +17,65 @@
 #include "states.h"
 #include "MapEditor.h"
 
+enum class uiStateResult {
+	mainMenu,
+	startGame,
+	options,
+	mapEditor,
+	exitAndClose,
+};
+
+uiStateResult mainMenu(Texture& cursor);
 int main() {
 	init_globals();
 	init_context("Attack of the Unidead");
-
 	set_stretch_mode(STRETCH_VIEWPORT);
 	set_aspect_mode(ASPECT_KEEP);
-
 	set_mouse_hidden(true);
-	Texture cursor = load_texture("data/art/cursor.png",   TEXTURE_PARAM);
+	Texture cursor = load_texture("data/art/cursor.png", TEXTURE_PARAM);
+
+	uiStateResult menuState = uiStateResult::mainMenu;
+	while (menuState != uiStateResult::exitAndClose) {
+		switch (menuState) {
+		case uiStateResult::mainMenu:
+			menuState = mainMenu(cursor);
+			break;
+		case uiStateResult::startGame:
+			//menuState = startGame();
+			break;
+		case uiStateResult::options:
+			// menuState = options();
+			break;
+		case uiStateResult::mapEditor:
+			//menuState = mapEditor();
+			break;
+		}
+
+	}
+	//global destruction
+	dispose_texture(cursor);
+	dispose_window();
+	return 0;
+}
+
+
+/**
+	this runs the main menu, 
+	returns, what next menu state to run
+	
+	cursor is only passed in this case because it
+	gets shared against all states(assumedly)
+
+	if any menu needs to load special textures it will have to 
+	in the loop and be reloaded for next ui state!
+
+*/
+uiStateResult mainMenu(Texture& cursor) {
 
 	Menu menu;
 	menu.xPos = 260;
 	menu.yPos = 90;
-	menu.width = 3;
-
-	add_state(new MapEditor(), "mapEditor");
-	set_state("mapEditor");
+	menu.width = 6;
 	
 	while (!is_window_closed()) {
 		vec2 mousePos = get_mouse_pos();
@@ -41,34 +83,30 @@ int main() {
 		begin_drawing();
 		begin2D();
 
-		update_current_state();
-
-		/*
-		//TEXT DEMONSTRATION
-		draw_text(HEADER_FONT, "Hello World!", 100, 100);
-		draw_text(BODY_FONT, "This is a test!", 100, 120);
-
-		//MENU DEMONSTRATION
-		menu.row(3);
+		
+		//Main menu! 
+		menu.row(4);
 		menu.background();
-		menu.title("Menu!");
-		if (menu.push_button("Button One")) {
-			printf("Button One has been pressed!\n");
-		}
-		if (menu.push_button("Button Two")) {
-			printf("Button Two has been pressed!\n");
-		}
-		if (menu.push_button("Button Three")) {
-			printf("Button Three has been pressed!\n");
-		}
-		*/
+		menu.title("Main Menu!");
 
+		if (menu.push_button("start game")) {
+			//return uiStateResult::startGame;
+		}
+		if (menu.push_button("options")) {
+			//return uiStateResult::options;
+		}
+		if (menu.push_button("map editor")) {
+			//return uiStateResult::mapEditor;
+		}
+		if (menu.push_button("close game")) {
+			//return uiStateResult::mapEditor;
+		}
 		draw_texture(cursor, mousePos.x, mousePos.y);
 
 		end2D();
 		end_drawing();
 	}
-	dispose_texture(cursor);
-	dispose_window();
-	return 0;
+
+	//at this point we are ending the program!
+	return uiStateResult::exitAndClose;
 }
