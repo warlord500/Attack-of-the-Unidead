@@ -39,7 +39,7 @@ INTERNAL int BODY_FONT_SIZE;
 INTERNAL int HEADER_FONT_SIZE;
 INTERNAL char* BODY_FONT_PATH;
 INTERNAL char* HEADER_FONT_PATH;
-const char const* ART_DIRECTORY = "data/art/";
+const char* const ART_DIRECTORY = "data/art/";
 
 INTERNAL int FPS_CAP = 100;
 INTERNAL int WINDOW_WIDTH = 800;
@@ -53,7 +53,7 @@ void process_init_line(std::vector<std::string> tokens, int line_num);
 
 //remove the commonality in error messages 
 //and get type checking, instead of undefined behaivor!
-void printErr(const char const* message, const int line_num) {
+void printErr(const char* const message, const int line_num) {
 	printf("ERROR IN FILE 'data/init.txt', line #%i:\t%s\n", line_num, message);
 };
 
@@ -61,7 +61,7 @@ void init_globals() {
 	printf("Loading launch data from configuration files...\n");
 
 	//LOADING COLORSCHEME
-	FILE* colors_file = fopen("data/colorscheme.txt", "r");
+	FILE* const colors_file = fopen("data/colorscheme.txt", "r");
 	const int SIZE_OF_BUFFER = 255;
 	char buffer[SIZE_OF_BUFFER] = {}; //set all values to 
 	int i = 0;
@@ -70,7 +70,7 @@ void init_globals() {
 		buffer[0] = 0;
 		fgets(buffer, SIZE_OF_BUFFER, colors_file);
 		if (buffer[0] == 0) break;
-		std::vector<std::string> tokens = decipher_line(buffer, "data/colorscheme.txt", i);
+		 const std::vector<std::string> tokens = decipher_line(buffer, "data/colorscheme.txt", i);
 
 		if (tokens.size() > 0) {
 			std::vector<std::string> split = tokenize_str(tokens[0].c_str(), '_');
@@ -86,7 +86,7 @@ void init_globals() {
 	fclose(colors_file);
 
 	//LOADING INIT DATA
-	FILE* init_file = fopen("data/init.txt", "r");
+	FILE* const init_file = fopen("data/init.txt", "r");
 	int j = 0;
 	while (true) {
 		j++;
@@ -104,13 +104,12 @@ void init_globals() {
 	printf("DONE LOADING\n");
 }
 
-void init_context(const char* title) {
+void init_context(const char* const title) {
 	init_window(WINDOW_WIDTH, WINDOW_HEIGHT, title, FULLSCREEN, RESIZABLE, PRIMARY_MONITOR);
-	//init_audio();
-
+	
 	printf("Loading font into VRAM...\n");
 	
-	const char const*  msg = "%s was not loaded correctly. The file (%s) is not valid.\n";
+	const char* const  msg = "%s was not loaded correctly. The file (%s) is not valid.\n";
 	#define LOAD_FONT(NAME) {\
 			 NAME = load_font(NAME ## _PATH, NAME ## _SIZE); \
 			 if (NAME.characters[0] == NULL) printf(msg, #NAME, NAME ## _PATH); \
@@ -135,17 +134,20 @@ void init_context(const char* title) {
 	int w;
 	int h;
 	int i = 0;
-	unsigned char* image = SOIL_load_image("data/art/menu.png", &w, &h, 0, SOIL_LOAD_RGBA);
-	for (int x = 0; x < 3; ++x)
-		for (int y = 0; y < 3; ++y)
-			menu_tex[i++] = getSubImage(image, w, x * (w / 3), y * (h / 3), w / 3, h / 3);
+	unsigned char* const image = SOIL_load_image("data/art/menu.png", &w, &h, 0, SOIL_LOAD_RGBA);
+	for (int x = 0; x < 3; ++x) {
+		for (int y = 0; y < 3; ++y) {
+			menu_tex[i] = getSubImage(image, w, x * (w / 3), y * (h / 3), w / 3, h / 3);
+			i += 1;
+		}
+	}
 	free(image);
 }
 
 Texture getSubImage(unsigned char* pixels, int pixels_width, int x, int y, int width, int height) {
 	Texture subimage;
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, pixels_width);
-	unsigned char* subimage_pixels = pixels + (x + y * pixels_width) * 4;
+	unsigned char* const subimage_pixels = pixels + (x + y * pixels_width) * 4;
 	subimage = load_texture(subimage_pixels, width, height, TEXTURE_PARAM);
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 	return subimage;
@@ -269,7 +271,7 @@ void process_init_line(const std::vector<std::string> tokens, const int line_num
 }
 
 
-std::vector<std::string> decipher_line(char* line, const char* filename, const int line_num) {
+std::vector<std::string> decipher_line(char* const line, const char* const filename, const int line_num) {
 	std::vector<std::string> tokens;
 	remove_characters(line, '\n');
 	remove_characters(line, '\t');
@@ -306,7 +308,7 @@ std::vector<std::string> decipher_line(char* line, const char* filename, const i
 	return tokens;
 }
 
-void remove_characters(char* string, const char to_remove) {
+void remove_characters(char* const string, const char to_remove) {
 	char* i = string;
 	char* j = string;
 	while (*j != NULL) {
@@ -316,7 +318,7 @@ void remove_characters(char* string, const char to_remove) {
 	*i = 0;
 }
 
-void remove_leading_characters(char* string,  const char to_remove) {
+void remove_leading_characters(char* const string,  const char to_remove) {
 	char* i = string;
 	char* j = string;
 	while (*j == to_remove) {
