@@ -5,10 +5,10 @@
 #include <iostream>
 #include "commonMenuStateInfo.h"
 
-UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate)
+UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor)
 {	
 	UiStateResult res = UiStateResult::continueProcessing;
-	while (!is_window_closed() && res != UiStateResult::continueProcessing) {
+	while (!is_window_closed() && res == UiStateResult::continueProcessing) {
 		vec2 mousePos = get_mouse_pos();
 		begin_drawing();
 		begin2D();
@@ -16,6 +16,7 @@ UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate)
 		res = frameUpdate(mousePos);
 		//this code doesnt get called if 
 		//exception occurs!
+		draw_texture(cursor, mousePos.x, mousePos.y);
 		end2D();
 		end_drawing();
 	}
@@ -32,14 +33,14 @@ if any menu needs to load special textures it will have to
 in the loop and be reloaded for next ui state!
 
 */
-UiStateResult mainMenu(Texture& cursor) {
+UiStateResult main_menu(Texture& cursor) {
 
 	Menu menu;
 	menu.xPos = 260;
 	menu.yPos = 90;
 	menu.width = 6;
 	
-	 return frame_update([&menu,cursor](vec2 mousePos) {
+	 return frame_update([&menu](vec2 mousePos) {
 		//Main menu! 
 		menu.row(4);
 		menu.background();
@@ -51,12 +52,11 @@ UiStateResult mainMenu(Texture& cursor) {
 			//return UiStateResult::options;
 		}
 		if (menu.push_button("map editor")) {
-			//return UiStateResult::mapEditor;
+			return UiStateResult::mapEditor;
 		}
 		if (menu.push_button("close game")) {
 			return UiStateResult::exitAndClose;
 		}
-		draw_texture(cursor, mousePos.x, mousePos.y);
 		return UiStateResult::continueProcessing;
-	});
+	},cursor);
 }

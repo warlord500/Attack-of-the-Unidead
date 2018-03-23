@@ -14,7 +14,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "gui.h"
-#include "states.h"
 #include "MapEditor.h"
 #include "commonMenuStateInfo.h"
 int main() {
@@ -25,11 +24,11 @@ int main() {
 	set_mouse_hidden(true);
 	Texture cursor = load_texture("data/art/cursor.png", TEXTURE_PARAM);
 
-	UiStateResult menuState = UiStateResult::mainMenu;
+	UiStateResult menuState = UiStateResult::main_menu;
 	while (menuState != UiStateResult::exitAndClose) {
 		switch (menuState) {
-		case UiStateResult::mainMenu:
-			menuState = mainMenu(cursor);
+		case UiStateResult::main_menu:
+			menuState = main_menu(cursor);
 			break;
 		case UiStateResult::startGame:
 			//menuState = startGame();
@@ -38,7 +37,11 @@ int main() {
 			// menuState = options();
 			break;
 		case UiStateResult::mapEditor:
-			//menuState = mapEditor();
+			menuState = MapEditorUi::mapEditor(cursor);
+			break;
+		case UiStateResult::continueProcessing:
+			printf("we have a bug in frame update!");
+			menuState = UiStateResult::exitAndClose;
 			break;
 		}
 

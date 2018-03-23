@@ -1,21 +1,26 @@
 #include "MapEditor.h"
 
-//is called when the state is added
-void MapEditor::init() {
-
+MapEditorUi::MapEditorUi()
+{
+	this->menu.xPos = 100;
+	this->menu.yPos = 60;
+	this->menu.width = 6;
 }
 
-//is called whenever the state is switched to
-void MapEditor::ready() {
-
+//this contains the main code for MapEditorUi!
+UiStateResult MapEditorUi::operator()(vec2 mousePos)
+{
+	menu.row(1);
+	menu.background();
+	menu.title("sorry!");
+	if (menu.push_button("the map editor is unimplemented!")) {
+		return UiStateResult::main_menu;
+	}
+	return UiStateResult::continueProcessing;
 }
 
-//is called every frame
-void MapEditor::update() {
-
-}
-
-//is called when state is removed
-void MapEditor::dispose() {
-
+UiStateResult MapEditorUi::mapEditor(Texture& cursor)
+{
+	MapEditorUi map;
+	return frame_update(map,cursor);
 }
