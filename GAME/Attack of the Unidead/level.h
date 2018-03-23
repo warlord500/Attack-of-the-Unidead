@@ -1,6 +1,4 @@
-#ifndef LEVEL_H
-#define LEVEL_H
-
+#pragma once
 #include <vector>
 #include <entity.h>
 
@@ -34,5 +32,3 @@ struct Room {
 	std::vector<Exit> exits;
 	std::vector<Entity*> entities;
 };
-
-#endif

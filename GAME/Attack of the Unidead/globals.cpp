@@ -197,7 +197,7 @@ std::vector<std::string> tokenize_str(const char* endOfSlice,  const char sepera
 
 #define ERR_INIT_NUMBER(NAME) \
 			if (tokens[0] == #NAME) { \
-					ERR_ARG(NAME) \
+					ERR_ARG(NAME); \
 					\
 					if (isdigit(tokens[1].at(0))) { \
 						NAME = stoi(tokens[1]); \

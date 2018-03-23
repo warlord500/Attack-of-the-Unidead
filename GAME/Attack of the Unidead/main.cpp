@@ -28,7 +28,7 @@ int main() {
 	while (menuState != UiStateResult::exitAndClose) {
 		switch (menuState) {
 		case UiStateResult::main_menu:
-			menuState = main_menu(cursor);
+			menuState =  main_menu(cursor);
 			break;
 		case UiStateResult::startGame:
 			//menuState = startGame();

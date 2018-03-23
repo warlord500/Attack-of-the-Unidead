@@ -2,29 +2,24 @@
 #include <font.h>
 
 INTERNAL
-bool draw_text_button(const char* text,const u32 text_width, const u16 xPos,const u16 yPos) {
-	const Rect button = rect(xPos, yPos, button_tex_n.width, button_tex_n.height);
-	const vec2 mouse_pos = get_mouse_pos();
-	if (colliding(button, mouse_pos.x, mouse_pos.y)) {
-		draw_texture(button_tex_h, xPos, yPos);
-		if (is_button_released(MOUSE_BUTTON_LEFT)) {
-			return true;
-		}
-	}
-	else {
-		draw_texture(button_tex_n, xPos, yPos);
-	}
-
+bool draw_text_button(const char* const text, const u32 text_width, const u16 xPos,const u16 yPos) {
+	draw_texture(button_tex_h, xPos, yPos);
 	draw_text(BODY_FONT, text, xPos + (button_tex_n.width / 2) - (text_width / 2),
 		yPos + (button_tex_n.height / 2) - (BODY_FONT.characters['P']->texture.height / 2), 
 		255, 255, 255
 	);
-	return false;
+
+	const Rect button = rect(xPos, yPos, button_tex_n.width, button_tex_n.height);
+	const vec2 mouse_pos = get_mouse_pos();
+	const bool collided = colliding(button, mouse_pos.x, mouse_pos.y);
+	const bool buttonReleased = is_button_released(MOUSE_BUTTON_LEFT);
+
+	return  collided & buttonReleased;
 }
 
 void Menu::background() {
-	assert(width >= 0);
-	assert(height >= 0);
+	assert(width >= 1);
+	assert(height >= 1);
 
 	draw_texture(menu_tex[0], xPos, yPos);
 	draw_texture(menu_tex[2], xPos, yPos + (height * menu_tex[0].height));
@@ -54,8 +49,8 @@ void Menu::row(const u16 num_columns) {
 }
 
 bool Menu::push_button(const char* text) {
-	u32 text_width = get_string_width(BODY_FONT, text);
-	u16 start_width = button_tex_n.width;
+	const u32 text_width = get_string_width(BODY_FONT, text);
+	const u16 start_width = button_tex_n.width;
 	if (text_width + 25 > start_width) {
 		button_tex_n.width = text_width + 25;
 		button_tex_h.width = text_width + 25;
@@ -71,7 +66,7 @@ bool Menu::push_button(const char* text) {
 }
 
 void Menu::title(const char* const title) {
-	u32 title_width = get_string_width(HEADER_FONT, title);
+	const u32 title_width = get_string_width(HEADER_FONT, title);
 	draw_text(HEADER_FONT, title, xPos + (((width+1)*menu_tex[0].width) / 2) - (title_width / 2),
 		yPos + (menu_tex[0].width / 2) - (HEADER_FONT.characters['T']->texture.height),
 		255, 255, 255

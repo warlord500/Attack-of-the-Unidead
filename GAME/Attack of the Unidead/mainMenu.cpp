@@ -1,4 +1,3 @@
-
 #include "globals.h"
 #include <bahamut.h>
 #include <audio.h>
@@ -8,7 +7,7 @@
 UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor)
 {	
 	UiStateResult res = UiStateResult::continueProcessing;
-	while (!is_window_closed() && res == UiStateResult::continueProcessing) {
+	while (!is_window_closed() & res == UiStateResult::continueProcessing) {
 		vec2 mousePos = get_mouse_pos();
 		begin_drawing();
 		begin2D();
@@ -19,9 +18,11 @@ UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Textur
 		draw_texture(cursor, mousePos.x, mousePos.y);
 		end2D();
 		end_drawing();
+		
 	}
 	return res;
-}	
+}
+
 /**
 this runs the main menu,
 returns, what next menu state to run
