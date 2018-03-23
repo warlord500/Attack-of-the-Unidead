@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\menuStates">
+      <UniqueIdentifier>{eb728acb-43f9-4481-aaf7-e2789663775e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\menuStates">
+      <UniqueIdentifier>{1242f008-db8b-4f46-b576-26e9fcace4c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h">
@@ -33,6 +39,9 @@
     <ClInclude Include="MapEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="commonMenuStateInfo.h">
+      <Filter>Header Files\menuStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="globals.cpp">
@@ -49,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="MapEditor.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainMenu.cpp">
+      <Filter>Source Files\menuStates</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
