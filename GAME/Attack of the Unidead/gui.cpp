@@ -3,18 +3,21 @@
 
 INTERNAL
 bool draw_text_button(const char* const text, const u32 text_width, const u16 xPos,const u16 yPos) {
-	draw_texture(button_tex_h, xPos, yPos);
-	draw_text(BODY_FONT, text, xPos + (button_tex_n.width / 2) - (text_width / 2),
-		yPos + (button_tex_n.height / 2) - (BODY_FONT.characters['P']->texture.height / 2), 
-		255, 255, 255
-	);
-
 	const Rect button = rect(xPos, yPos, button_tex_n.width, button_tex_n.height);
 	const vec2 mouse_pos = get_mouse_pos();
 	const bool collided = colliding(button, mouse_pos.x, mouse_pos.y);
 	const bool buttonReleased = is_button_released(MOUSE_BUTTON_LEFT);
 
-	return  collided & buttonReleased;
+	if(collided)
+		draw_texture(button_tex_h, xPos, yPos);
+	else
+		draw_texture(button_tex_n, xPos, yPos);
+	draw_text(BODY_FONT, text, xPos + (button_tex_n.width / 2) - (text_width / 2),
+		yPos + (button_tex_n.height / 2) - (BODY_FONT.characters['P']->texture.height / 2), 
+		255, 255, 255
+	);
+
+	return collided & buttonReleased;
 }
 
 void Menu::background() {
