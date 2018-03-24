@@ -20,8 +20,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "MapEditor.h"
 #include "window.h"
 #include <bahamut.h>
+#include "commonMenuStateInfo.h"
+#include <sstream>
 
 void mapOptions(MapEditorUi& map, Texture& cursor);
+
 MapEditorUi::MapEditorUi()
 {
 	this->menu.xPos = 100;
@@ -31,16 +34,17 @@ MapEditorUi::MapEditorUi()
 	
 }
 
-//this contains the main code for MapEditorUi!
+//this contains the looped code for MapEditorUi!
 UiStateResult MapEditorUi::operator()(vec2 mousePos)
 {
+	
 	menu.row(2);
 	menu.background();
 	menu.title("sorry!");
+	
 	const int key = get_key_pressed();
-	if (key >= 32 && key <= 125) this->room_size.push_back(key);
-	if (key == KEY_BACKSPACE) this->room_size.pop_back();
-	draw_text(BODY_FONT, room_size.c_str(), 50, 50);
+	this->room_size = std::move(textInput(std::move(this->room_size),key));
+	draw_text(BODY_FONT, this->room_size.c_str(), 50, 50);
 	if (menu.push_button("the map editor is unimplemented!")) {
 		printf("why doesnt this work!");
 		return UiStateResult::main_menu;
@@ -50,6 +54,7 @@ UiStateResult MapEditorUi::operator()(vec2 mousePos)
 	}
 	return UiStateResult::continueProcessing;
 }
+
    
 UiStateResult MapEditorUi::mapEditor(Texture& cursor)
 {

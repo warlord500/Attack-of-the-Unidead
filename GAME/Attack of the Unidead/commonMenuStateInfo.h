@@ -17,7 +17,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 */
-#pragma once
+#ifndef _COMMON_MENU_STATE_
+#define _COMMON_MENU_STATE_
 #include <functional>
 #include "gui.h"
 #include <bahamut.h>
@@ -31,6 +32,9 @@ enum class UiStateResult {
 	//with data, so include this for frame_update
 	continueProcessing,
 };
+//noo! i really wish i could make this pure!
+std::string textInput(std::string data, int key);
 
 UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor);
 UiStateResult main_menu(Texture& cursor);
+#endif

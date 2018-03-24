@@ -22,10 +22,22 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <audio.h>
 #include <iostream>
 #include "commonMenuStateInfo.h"
+#include <utility>
+
+std::string textInput(std::string data, int key)
+{
+	if (key >= 32 && key <= 125) {
+		data.push_back(key);
+	}
+	else if (key == KEY_BACKSPACE && data.size() > 0){ //delete char if there is one 
+		data.pop_back();
+	}
+	return std::move(data);
+}
 
 UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor)
 {	
-	UiStateResult res = UiStateResult::continueProcessing;
+	UiStateResult res = UiStateResult::main_menu;
 	while (!is_window_closed() & res == UiStateResult::continueProcessing) {
 		vec2 mousePos = get_mouse_pos();
 		begin_drawing();
@@ -59,11 +71,8 @@ UiStateResult main_menu(Texture& cursor) {
 	menu.xPos = 260;
 	menu.yPos = 90;
 	menu.width = 6;
-	std::string typedWords;
-	int timer = 0;
 	
-	 return frame_update([&menu, &timer, &typedWords](vec2 mousePos) {
-		 timer++;
+	 return frame_update([&menu](vec2 mousePos) {
 
 		//Main menu! 
 		menu.row(4);
@@ -81,13 +90,7 @@ UiStateResult main_menu(Texture& cursor) {
 		if (menu.push_button("close game")) {
 			return UiStateResult::exitAndClose;
 		}
-		int key = get_key_pressed();
-		if (key >= 32 && key <= 125) typedWords.push_back(key);
-		if (key == KEY_BACKSPACE) typedWords.pop_back();
-		if (timer % 100 > 50)
-			draw_text(BODY_FONT, format_text("%s%s   size: %d", typedWords.c_str(), "_", typedWords.size()), 50, 50);
-		else
-			draw_text(BODY_FONT, format_text("%s     size: %d", typedWords.c_str(), typedWords.size()), 50, 50);
+		
 		draw_text(BODY_FONT, "The performance of the above could be better.", 50, 80);
 		return UiStateResult::continueProcessing;
 	},cursor);
