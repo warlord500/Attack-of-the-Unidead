@@ -37,7 +37,7 @@ std::string textInput(std::string data, int key)
 
 UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor)
 {	
-	UiStateResult res = UiStateResult::main_menu;
+	UiStateResult res = UiStateResult::continueProcessing;
 	while (!is_window_closed() & res == UiStateResult::continueProcessing) {
 		vec2 mousePos = get_mouse_pos();
 		begin_drawing();
@@ -90,7 +90,6 @@ UiStateResult main_menu(Texture& cursor) {
 		if (menu.push_button("close game")) {
 			return UiStateResult::exitAndClose;
 		}
-		
 		draw_text(BODY_FONT, "The performance of the above could be better.", 50, 80);
 		return UiStateResult::continueProcessing;
 	},cursor);

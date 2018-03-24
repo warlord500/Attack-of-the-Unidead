@@ -44,7 +44,17 @@ UiStateResult MapEditorUi::operator()(vec2 mousePos)
 	
 	const int key = get_key_pressed();
 	this->room_size = std::move(textInput(std::move(this->room_size),key));
-	draw_text(BODY_FONT, this->room_size.c_str(), 50, 50);
+	
+	std::stringstream display_room_size_stream;
+	display_room_size_stream << "room Size: ";
+	display_room_size_stream << this->room_size;
+	const auto display_room_size_string = display_room_size_stream.str();
+
+	draw_text(BODY_FONT, display_room_size_string.c_str() , 50, 50);
+
+
+
+
 	if (menu.push_button("the map editor is unimplemented!")) {
 		printf("why doesnt this work!");
 		return UiStateResult::main_menu;
