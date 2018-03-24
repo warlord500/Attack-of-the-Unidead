@@ -61,6 +61,10 @@ void set_key_callback(void(*keyCallback)(int key, int action));
 void set_mouse_callback(void(*mouseCallback)(double mousex, double mousey, int button, int action));
 void set_window_resize_callback(void(*resizecallback)(int width, int height));
 
+int get_key_pressed();
+int get_button_pressed();
+int get_key_released();
+int get_button_released();
 bool is_key_pressed(unsigned int keycode);
 bool is_key_released(unsigned int keycode);
 bool is_button_pressed(unsigned int button);
@@ -74,6 +78,7 @@ double get_elapsed_time();
 
 void get_mouse_pos(double* mousex, double* mousey);
 vec2 get_mouse_pos();
+void set_window_should_close(bool shouldClose);
 void dispose_window();
 
 void set_FPS_cap(double FPS);
