@@ -48,6 +48,7 @@ void mapOptions(MapEditorUi& map,Texture& cursor) {
 		menu.background();
 		menu.title("map options doesnt work sorry!");
 		if (menu.push_button("back to main menu via mapOptions!")) {
+			printf("options button pushed");
 			return UiStateResult::main_menu;
 		}
 		return UiStateResult::continueProcessing;

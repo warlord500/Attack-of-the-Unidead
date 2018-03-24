@@ -11,7 +11,8 @@ bool draw_text_button(const char* const text, const u32 text_width, const u16 xP
 	if(collided)
 		draw_texture(button_tex_h, xPos, yPos);
 	else
-		draw_texture(button_tex_n, xPos, yPos);
+		draw_texture(button_tex_n, xPos, yPos); //highlight if mouse is on button
+
 	draw_text(BODY_FONT, text, xPos + (button_tex_n.width / 2) - (text_width / 2),
 		yPos + (button_tex_n.height / 2) - (BODY_FONT.characters['P']->texture.height / 2), 
 		255, 255, 255
