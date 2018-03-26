@@ -20,6 +20,12 @@ Globals and macros are formatted like this:
 #define TEST_MACRO(x) #x
 global_var TEST_GLOBAL_VAR;
 ```
+Curly Braces are formmated like this:
+```
+void example_function() {
+	//code;
+}
+```
 
 ## Linking the library into Visual Studio
 

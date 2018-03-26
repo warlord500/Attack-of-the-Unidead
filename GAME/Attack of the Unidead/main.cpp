@@ -36,6 +36,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gui.h"
 #include "MapEditor.h"
 #include "commonMenuStateInfo.h"
+
 int main() {
 	init_globals();
 	init_context("Attack of the Unidead");
@@ -44,27 +45,25 @@ int main() {
 	set_mouse_hidden(true);
 	Texture cursor = load_texture("data/art/cursor.png", TEXTURE_PARAM);
 
-	UiStateResult menuState = UiStateResult::main_menu;
-	while (menuState != UiStateResult::exitAndClose) {
-		switch (menuState) {
-		case UiStateResult::main_menu:
-			menuState =  main_menu(cursor);
+	UiStateResult state = UiStateResult::MAIN_MENU;
+	while (state != UiStateResult::EXIT_AND_CLOSE) {
+		if (is_window_closed()) state = UiStateResult::EXIT_AND_CLOSE;
+
+		switch (state) {
+		case UiStateResult::MAIN_MENU:
+			state = main_menu(cursor);
 			break;
-		case UiStateResult::startGame:
+		case UiStateResult::GAME:
 			//menuState = startGame();
 			break;
-		case UiStateResult::options:
-			// menuState = options();
+		case UiStateResult::MAP_EDIT_MENU:
+			state = MapEditorUi::map_edit_menu(cursor);
 			break;
-		case UiStateResult::mapEditor:
-			menuState = MapEditorUi::mapEditor(cursor);
-			break;
-		case UiStateResult::continueProcessing:
+		case UiStateResult::CONTINUE:
 			printf("we have a bug in frame update!");
-			menuState = UiStateResult::exitAndClose;
+			state = UiStateResult::EXIT_AND_CLOSE;
 			break;
 		}
-
 	}
 	//global destruction
 	dispose_texture(cursor);

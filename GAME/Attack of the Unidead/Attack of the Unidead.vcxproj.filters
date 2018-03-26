@@ -33,10 +33,10 @@
     <ClInclude Include="components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="commonMenuStateInfo.h">
+      <Filter>Header Files\menuStates</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
       <Filter>Header Files\menuStates</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,11 +50,14 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapEditor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mainMenu.cpp">
       <Filter>Source Files\menuStates</Filter>
     </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>Source Files\menuStates</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
   </ItemGroup>
 </Project>

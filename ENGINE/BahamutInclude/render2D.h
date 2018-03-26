@@ -102,6 +102,7 @@ void draw_texture(Texture tex, i32 xPos, i32 yPos);
 //Comments: If the texture has it's flip_flag set to FLIP_HORIZONTAL or 
 //		FLIP_VERTICAL or both, it will be flipped accordingly when drawn.
 //==========================================================================================
+void draw_texture(Texture tex, i32 xPos, i32 yPos, i32 width, i32 height);
 void draw_texture(Texture tex, i32 xPos, i32 yPos, f32 r, f32 g, f32 b, f32 a);
 void draw_texture_rotated(Texture tex, i32 xPos, i32 yPos, f32 rotateDegree);
 void draw_texture_rotated(Texture tex, i32 xPos, i32 yPos, vec2 origin, f32 rotation);

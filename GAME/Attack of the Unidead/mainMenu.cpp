@@ -24,8 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "commonMenuStateInfo.h"
 #include <utility>
 
-std::string textInput(std::string data, int key)
-{
+std::string text_input(std::string data, int key) {
 	if (key >= 32 && key <= 125) {
 		data.push_back(key);
 	}
@@ -35,10 +34,9 @@ std::string textInput(std::string data, int key)
 	return std::move(data);
 }
 
-UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor)
-{	
-	UiStateResult res = UiStateResult::continueProcessing;
-	while (!is_window_closed() & res == UiStateResult::continueProcessing) {
+UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor) {	
+	UiStateResult res = UiStateResult::CONTINUE;
+	while (!is_window_closed() & res == UiStateResult::CONTINUE) {
 		vec2 mousePos = get_mouse_pos();
 		begin_drawing();
 		begin2D();
@@ -66,14 +64,12 @@ in the loop and be reloaded for next ui state!
 
 */
 UiStateResult main_menu(Texture& cursor) {
-
 	Menu menu;
-	menu.xPos = 260;
-	menu.yPos = 90;
+	menu.xPos = CENTER_HORIZONTAL;
+	menu.yPos = CENTER_VERTICAL;
 	menu.width = 6;
 	
 	 return frame_update([&menu](vec2 mousePos) {
-
 		//Main menu! 
 		menu.row(4);
 		menu.background();
@@ -85,12 +81,11 @@ UiStateResult main_menu(Texture& cursor) {
 			//return UiStateResult::options;
 		}
 		if (menu.push_button("map editor")) {
-			return UiStateResult::mapEditor;
+			return UiStateResult::MAP_EDIT_MENU;
 		}
 		if (menu.push_button("close game")) {
-			return UiStateResult::exitAndClose;
+			return UiStateResult::EXIT_AND_CLOSE;
 		}
-		draw_text(BODY_FONT, "The performance of the above could be better.", 50, 80);
-		return UiStateResult::continueProcessing;
+		return UiStateResult::CONTINUE;
 	},cursor);
 }

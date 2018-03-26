@@ -23,17 +23,18 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gui.h"
 #include <bahamut.h>
 enum class UiStateResult {
-	main_menu,
-	startGame,
-	options,
-	mapEditor,
-	exitAndClose,
+	MAIN_MENU,
+	GAME,
+	NEW_MAP,
+	MAP_EDITOR,
+	MAP_EDIT_MENU,
+	EXIT_AND_CLOSE,
 	//sadly c++ doesnt support enums 
 	//with data, so include this for frame_update
-	continueProcessing,
+	CONTINUE,
 };
 //noo! i really wish i could make this pure!
-std::string textInput(std::string data, int key);
+std::string text_input(std::string data, int key);
 
 UiStateResult frame_update(std::function<UiStateResult(vec2)> frameUpdate,Texture& cursor);
 UiStateResult main_menu(Texture& cursor);

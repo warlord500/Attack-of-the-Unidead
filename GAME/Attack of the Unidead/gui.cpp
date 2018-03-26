@@ -19,6 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 #include "gui.h"
 #include <font.h>
+#include <bahamut.h>
 
 INTERNAL
 bool draw_text_button(const char* const text, const u32 text_width, const u16 xPos,const u16 yPos) {
@@ -38,6 +39,47 @@ bool draw_text_button(const char* const text, const u32 text_width, const u16 xP
 	);
 
 	return collided & buttonReleased;
+}
+
+bool draw_text_button(const char* const text, const u16 xPos, const u16 yPos) {
+	const u32 text_width = get_string_width(BODY_FONT, text);
+	return draw_text_button(text, text_width, xPos, yPos);
+}
+
+void text_input_field(std::string* output, const u16 xPos, const u16 yPos, InputRestrictions restriction) {
+#define TEMP_WIDTH  80
+#define TEMP_HEIGHT 20
+
+	const Rect button = rect(xPos, yPos, TEMP_WIDTH, TEMP_HEIGHT);
+	const vec2 mouse_pos = get_mouse_pos();
+	const bool collided = colliding(button, mouse_pos.x, mouse_pos.y);
+
+	if (collided) {
+		const int key = get_key_pressed();
+		if(restriction == INPUT_CHARS_ONLY)
+			if (key >= 'a' && key <= 'z')
+				output->push_back(key);
+
+		if (restriction == INPUT_NUMBERS_ONLY)
+			if (key >= '0' && key <= '9')
+				output->push_back(key);
+
+		if (restriction == INPUT_ALL_ALLOWED)
+			if (key >= '!' && key <= '~')
+				output->push_back(key);
+
+		if (key == KEY_BACKSPACE && output->size() > 0)
+			output->pop_back();
+	}
+
+	if (collided)
+		draw_texture(button_tex_h, xPos, yPos, TEMP_WIDTH, TEMP_HEIGHT);
+	else
+		draw_texture(button_tex_n, xPos, yPos, TEMP_WIDTH, TEMP_HEIGHT); //highlight if mouse is on button
+	draw_text(BODY_FONT, *output, xPos + 3, yPos + (TEMP_HEIGHT / 2) - (BODY_FONT.characters['T']->texture.height / 2));
+
+#undef TEMP_WIDTH
+#undef TEMP_HEIGHT
 }
 
 void Menu::background() {
@@ -66,7 +108,18 @@ void Menu::background() {
 
 void Menu::row(const u16 num_columns) {
 	assert(num_columns > 0);
+	assert(width >= 1);
 	height = num_columns;
+
+	if (xPos == CENTER_HORIZONTAL) {
+		xPos = get_virtual_width() / 2;
+		xPos -= ((width * menu_tex[0].width) / 2);
+	}
+	if (yPos == CENTER_VERTICAL) {
+		yPos = get_virtual_height() / 2;
+		yPos -= ((height * menu_tex[0].height) / 2);
+	}
+
 	curr_x = xPos;
 	curr_y = yPos + 40;
 }

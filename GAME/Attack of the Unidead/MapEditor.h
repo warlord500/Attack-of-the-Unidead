@@ -17,6 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 */
+
 #ifndef MAP_EDITOR_H
 #define MAP_EDITOR_H
 #include "commonMenuStateInfo.h"
@@ -25,9 +26,11 @@ class MapEditorUi {
 public:
 	MapEditorUi();
 	UiStateResult operator()(vec2 mousePos);
-	static UiStateResult mapEditor(Texture& cursor);
+	static UiStateResult map_edit_menu(Texture& cursor);
+
+	std::string roomWidth;
+	std::string roomHeight;
 private:
 	Menu menu;
-	std::string room_size;
 };
 #endif

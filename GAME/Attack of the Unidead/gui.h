@@ -23,6 +23,18 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <defines.h>
 #include "globals.h"
 
+#define CENTER_HORIZONTAL  0xFFFF
+#define CENTER_VERTICAL    0xFFFF
+
+enum InputRestrictions {
+	INPUT_CHARS_ONLY,
+	INPUT_NUMBERS_ONLY,
+	INPUT_ALL_ALLOWED
+};
+
+bool draw_text_button(const char* const text, const u16 xPos, const u16 yPos);
+void text_input_field(std::string* output, const u16 xPos, const u16 yPos, InputRestrictions restriction);
+
 struct Menu {
 	u16 width;
 	u16 height;
