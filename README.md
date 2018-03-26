@@ -15,12 +15,17 @@ Variables are formatted like this:
 ```
 TestStruct testVariableName;
 ```
-Globals and macros are formatted like this: 
+Globals, macros, and enums are formatted like this: 
 ```
 #define TEST_MACRO(x) #x
 global_var TEST_GLOBAL_VAR;
+
+enum TestEnum {
+SCREAMING_SNAKE_CASE,
+ENUM_OPTION_2,
+}
 ```
-Curly Braces are formmated like this:
+Curly Braces are formatted like this:
 ```
 void example_function() {
 	//code;
