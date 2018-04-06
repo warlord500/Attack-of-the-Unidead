@@ -36,18 +36,6 @@ UiStateResult MapEditorUi::operator()(vec2 mousePos) {
 	menu.row(3);
 	menu.background();
 	menu.title("Map Editor");
-	
-#if 0
-	const int key = get_key_pressed();
-	this->roomSize = std::move(text_input(std::move(this->roomSize),key));
-	
-	std::stringstream displayRoomSizeStream;
-	displayRoomSizeStream << "room Size: ";
-	displayRoomSizeStream << this->roomSize;
-	const auto displayRoomSizeString = displayRoomSizeStream.str();
-
-	draw_text(BODY_FONT, displayRoomSizeString.c_str() , 50, 50);
-#endif
 
 	if (menu.push_button("New Map")) {
 		return UiStateResult::NEW_MAP;

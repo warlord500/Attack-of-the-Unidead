@@ -12,4 +12,6 @@
 GAME/Attack of the Unidead/.vs/*
 GAME/Attack of the Unidead/.vs/*
 GAME/Attack of the Unidead/Debug/*
+GAME/docs/*
+GAME/maintenance_docs/*
 *.lastbuildstate
